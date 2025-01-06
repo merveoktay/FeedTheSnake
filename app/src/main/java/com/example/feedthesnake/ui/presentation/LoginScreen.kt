@@ -14,6 +14,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.feedthesnake.R
@@ -32,7 +33,7 @@ fun LoginScreenContent(modifier: Modifier) {
 Box (modifier=modifier.fillMaxSize()){
     Image(
         painter = painterResource(id = R.drawable.login_background),
-        contentDescription = "Logo",
+        contentDescription = stringResource(R.string.logo),
         modifier = modifier.fillMaxSize(1f),
         contentScale = ContentScale.Crop
     )
@@ -43,13 +44,13 @@ Box (modifier=modifier.fillMaxSize()){
         horizontalAlignment = Alignment.CenterHorizontally) {
         Image(
             painter = painterResource(id = R.drawable.login_icon),
-            contentDescription = "Logo",
+            contentDescription = stringResource(R.string.logo),
             modifier = Modifier.size(300.dp),
             contentScale = ContentScale.Fit
         )
-        CustomButton(text = "New Game")
-        CustomButton(text = "High Score")
-        CustomButton(text = "Exit")
+        CustomButton(text = stringResource(R.string.new_game))
+        CustomButton(text = stringResource(R.string.high_score))
+        CustomButton(text = stringResource(R.string.exit))
 
     }
 }

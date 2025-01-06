@@ -22,6 +22,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -46,7 +47,7 @@ fun NameEntryScreenContent(modifier: Modifier) {
     Box(modifier = modifier.fillMaxSize()) {
         Image(
             painter = painterResource(id = R.drawable.background),
-            contentDescription = "Logo",
+            contentDescription = stringResource(R.string.logo),
             modifier = modifier.fillMaxSize(1f),
             contentScale = ContentScale.Crop
         )
@@ -58,7 +59,7 @@ fun NameEntryScreenContent(modifier: Modifier) {
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             Text(
-                text = "Give Me a Name",
+                text = stringResource(R.string.give_me_a_name),
                 color = DarkGrey,
                 fontSize = 64.sp,
                 modifier = modifier.padding(start = 50.dp, end = 50.dp, bottom = 50.dp)
@@ -68,7 +69,7 @@ fun NameEntryScreenContent(modifier: Modifier) {
                 onValueChange = { newName ->
                     name = newName
                 },
-                label = { Text("Email", color = DarkGrey) },
+                label = { Text(stringResource(R.string.name), color = DarkGrey) },
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(start = 50.dp, end = 50.dp, top = 10.dp, bottom = 10.dp),
@@ -80,7 +81,7 @@ fun NameEntryScreenContent(modifier: Modifier) {
                     cursorColor = DarkGrey
                 )
             )
-            CustomButton(text = "Save")
+            CustomButton(text = stringResource(R.string.save))
         }
     }
 }

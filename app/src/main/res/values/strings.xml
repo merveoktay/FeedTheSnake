@@ -1,3 +1,13 @@
 <resources>
     <string name="app_name">FeedTheSnake</string>
+    <string name="new_game">New Game</string>
+    <string name="logo">Logo</string>
+    <string name="high_score">High Score</string>
+    <string name="exit">Exit</string>
+    <string name="give_me_a_name">Give Me a Name</string>
+    <string name="name">Name</string>
+    <string name="save">Save</string>
+    <string name="welcome">Welcome</string>
+    <string name="score">Score</string>
+    <string name="back">Back</string>
 </resources>
