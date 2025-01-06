@@ -10,4 +10,8 @@
     <string name="welcome">Welcome</string>
     <string name="score">Score</string>
     <string name="back">Back</string>
+    <string name="try_again">Try Again</string>
+    <string name="game_over">Game Over</string>
+    <string name="your_score">Your Score : %1$s</string>
+    <string name="score_table">Score Table</string>
 </resources>

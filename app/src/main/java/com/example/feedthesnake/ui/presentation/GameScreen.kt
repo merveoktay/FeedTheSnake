@@ -85,7 +85,7 @@ fun GameScreenTopBar(score:Int) {
                     horizontalAlignment = Alignment.CenterHorizontally
                 ) {
                     Text(
-                        text = "Score",
+                        text = stringResource(R.string.score),
                         color = Color.Black,
                         fontSize = 14.sp,
                         fontWeight = FontWeight.Bold,
