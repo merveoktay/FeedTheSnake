@@ -22,7 +22,7 @@ fun CustomButton(modifier: Modifier = Modifier, text: String,onNavigate: () -> U
 
     Button(
         onClick = {onNavigate()},
-        modifier = Modifier
+        modifier = modifier
             .padding(start = 50.dp, end = 50.dp, top = 10.dp, bottom = 10.dp)
             .fillMaxWidth(),
         colors = ButtonDefaults.buttonColors(Green),
