@@ -29,6 +29,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Offset
+import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.platform.LocalDensity
@@ -112,17 +113,33 @@ fun GameScreenContent(modifier: Modifier, onScoreChange: (Int) -> Unit,onNavigat
     var foodPosition by remember { mutableStateOf(randomOffset()) }
     var snakeDirection by remember { mutableStateOf(Offset(1f, 0f)) }
     val blockSize = with(LocalDensity.current) { 20.dp.toPx() }
-    var score by remember {
-        mutableIntStateOf(0)
-    }
+    var score by remember { mutableIntStateOf(0) }
 
-    LaunchedEffect(key1 = Unit) {
+    var canvasSize by remember { mutableStateOf(Size.Zero) }
+
+    LaunchedEffect(key1 = canvasSize) {
         while (true) {
             delay(200)
+
             val newHead = snakeBody.first().copy(
                 x = snakeBody.first().x + blockSize * snakeDirection.x,
                 y = snakeBody.first().y + blockSize * snakeDirection.y
             )
+
+            // Duvara çarpma kontrolü
+            if (newHead.x < 0 || newHead.x >= canvasSize.width ||
+                newHead.y < 0 || newHead.y >= canvasSize.height
+            ) {
+                onNavigateToGameOver()
+                return@LaunchedEffect
+            }
+
+            // Yılanın kendine çarpma kontrolü
+            if (snakeBody.drop(1).contains(newHead)) {
+                onNavigateToGameOver()
+                return@LaunchedEffect
+            }
+
             snakeBody = listOf(newHead) + snakeBody.dropLast(1)
 
             if (newHead.x >= foodPosition.x && newHead.x < foodPosition.x + blockSize &&
@@ -130,29 +147,30 @@ fun GameScreenContent(modifier: Modifier, onScoreChange: (Int) -> Unit,onNavigat
             ) {
                 snakeBody = listOf(newHead) + snakeBody
                 foodPosition = randomOffset()
-                score +=5
+                score += 5
                 onScoreChange(score)
             }
         }
     }
 
-    Canvas(modifier = modifier
-        .fillMaxSize()
-        .padding(15.dp)
-        .border(3.dp, DarkGreen)
-        .pointerInput(Unit) {
-            detectDragGestures { change, dragAmount ->
-                val (dragX, dragY) = dragAmount
-                snakeDirection = when {
-                    abs(dragX) > abs(dragY) -> if (dragX > 0) Offset(1f, 0f) else Offset(
-                        -1f,
-                        0f
-                    )
-
-                    else -> if (dragY > 0) Offset(0f, 1f) else Offset(0f, -1f)
+    Canvas(
+        modifier = modifier
+            .fillMaxSize()
+            .padding(15.dp)
+            .border(3.dp, DarkGreen)
+            .pointerInput(Unit) {
+                detectDragGestures { change, dragAmount ->
+                    val (dragX, dragY) = dragAmount
+                    snakeDirection = when {
+                        abs(dragX) > abs(dragY) -> if (dragX > 0) Offset(1f, 0f) else Offset(-1f, 0f)
+                        else -> if (dragY > 0) Offset(0f, 1f) else Offset(0f, -1f)
+                    }
                 }
             }
-        }) {
+    ) {
+        // Canvas boyutlarını güncelle
+        canvasSize = size
+
         snakeBody.forEach { bodyPart ->
             drawCircle(
                 color = DarkGreen,
