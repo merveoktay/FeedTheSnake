@@ -21,15 +21,15 @@ import com.example.feedthesnake.R
 import com.example.feedthesnake.ui.components.CustomButton
 
 @Composable
-fun LoginScreen() {
+fun HomeScreen(onNavigateToNameEntry: () -> Unit,onNavigateToScoreTable: () -> Unit) {
     Scaffold(content = { innerPadding ->
-        LoginScreenContent(modifier = Modifier.padding(innerPadding))
+        HomeScreenContent(modifier = Modifier.padding(innerPadding),onNavigateToNameEntry,onNavigateToScoreTable)
 
     })
 }
 
 @Composable
-fun LoginScreenContent(modifier: Modifier) {
+fun HomeScreenContent(modifier: Modifier,onNavigateToNameEntry: () -> Unit,onNavigateToScoreTable: () -> Unit) {
 Box (modifier=modifier.fillMaxSize()){
     Image(
         painter = painterResource(id = R.drawable.login_background),
@@ -48,9 +48,9 @@ Box (modifier=modifier.fillMaxSize()){
             modifier = Modifier.size(300.dp),
             contentScale = ContentScale.Fit
         )
-        CustomButton(text = stringResource(R.string.new_game))
-        CustomButton(text = stringResource(R.string.high_score))
-        CustomButton(text = stringResource(R.string.exit))
+        CustomButton(text = stringResource(R.string.new_game), onNavigate = onNavigateToNameEntry)
+        CustomButton(text = stringResource(R.string.high_score), onNavigate = onNavigateToScoreTable)
+        CustomButton(text = stringResource(R.string.exit), onNavigate = {})
 
     }
 }
@@ -60,6 +60,6 @@ Box (modifier=modifier.fillMaxSize()){
 
 @Composable
 @Preview
-fun LoginScreenPrev() {
-    LoginScreen()
+fun HomeScreenPrev() {
+    HomeScreen(onNavigateToNameEntry={},onNavigateToScoreTable={})
 }

@@ -22,11 +22,11 @@ import com.example.feedthesnake.ui.theme.LightBlue
 
 
 @Composable
-fun SplashScreen(){
+fun SplashScreen(onNavigateToSecondSplash: () -> Unit){
     Box(
         modifier = Modifier
             .fillMaxSize()
-            .background(LightBlue).clickable { }
+            .background(LightBlue).clickable { onNavigateToSecondSplash() }
     ) {
         Column(
             modifier = Modifier
@@ -48,5 +48,5 @@ fun SplashScreen(){
 @Composable
 @Preview
 fun SplashScreenPrev(){
-    SplashScreen()
+    SplashScreen(onNavigateToSecondSplash = {})
 }

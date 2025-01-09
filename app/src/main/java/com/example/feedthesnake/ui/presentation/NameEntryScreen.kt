@@ -3,16 +3,22 @@ package com.example.feedthesnake.ui.presentation
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextFieldDefaults
+import androidx.compose.material3.TopAppBar
+import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -20,6 +26,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -28,21 +35,23 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.feedthesnake.R
 import com.example.feedthesnake.ui.components.CustomButton
+import com.example.feedthesnake.ui.components.CustomTopBar
 import com.example.feedthesnake.ui.theme.DarkGreen
 import com.example.feedthesnake.ui.theme.DarkGrey
 import com.example.feedthesnake.ui.theme.Green
+import com.example.feedthesnake.ui.theme.LightBlue
 
 @Composable
-fun NameEntryScreen() {
-    Scaffold( content = { innerPadding ->
+fun NameEntryScreen(onNavigateToHome: () -> Unit,onNavigateToGame: () -> Unit ){
+    Scaffold(containerColor = LightBlue,topBar = { CustomTopBar(onNavigateToHome)}, content = { innerPadding ->
 
-        NameEntryScreenContent(modifier = Modifier.padding(innerPadding))
+        NameEntryScreenContent(modifier = Modifier.padding(innerPadding),onNavigateToHome,onNavigateToGame)
     })
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun NameEntryScreenContent(modifier: Modifier) {
+fun NameEntryScreenContent(modifier: Modifier,onNavigateToHome: () -> Unit,onNavigateToGame: () -> Unit) {
     var name by remember { mutableStateOf("") }
     Box(modifier = modifier.fillMaxSize()) {
         Image(
@@ -81,7 +90,7 @@ fun NameEntryScreenContent(modifier: Modifier) {
                     cursorColor = DarkGrey
                 )
             )
-            CustomButton(text = stringResource(R.string.save))
+            CustomButton(text = stringResource(R.string.save), onNavigate = onNavigateToGame)
         }
     }
 }
@@ -90,5 +99,5 @@ fun NameEntryScreenContent(modifier: Modifier) {
 @Composable
 @Preview
 fun NameEntryScreenPrev() {
-    NameEntryScreen()
+    NameEntryScreen(onNavigateToHome={},onNavigateToGame={})
 }

@@ -18,10 +18,10 @@ import com.example.feedthesnake.ui.theme.Green
 
 
 @Composable
-fun CustomButton(modifier: Modifier = Modifier, text: String) {
+fun CustomButton(modifier: Modifier = Modifier, text: String,onNavigate: () -> Unit) {
 
     Button(
-        onClick = { /* TODO */ },
+        onClick = {onNavigate()},
         modifier = Modifier
             .padding(start = 50.dp, end = 50.dp, top = 10.dp, bottom = 10.dp)
             .fillMaxWidth(),
@@ -35,5 +35,5 @@ fun CustomButton(modifier: Modifier = Modifier, text: String) {
 @Composable
 @Preview
 fun CustomButtonPrev() {
-    CustomButton(text = stringResource(R.string.new_game))
+    CustomButton(text = stringResource(R.string.new_game), onNavigate = {})
 }

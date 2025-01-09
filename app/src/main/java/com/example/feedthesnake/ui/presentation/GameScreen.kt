@@ -47,25 +47,25 @@ import kotlin.math.abs
 import kotlin.random.Random
 
 @Composable
-fun GameScreen() {
+fun GameScreen(onNavigateToHome: () -> Unit,onNavigateToGameOver: () -> Unit) {
     var score by remember {
         mutableIntStateOf(0)
     }
     Scaffold(
         containerColor = LightBlue,
-        topBar = { GameScreenTopBar(score) },
+        topBar = { GameScreenTopBar(score,onNavigateToHome) },
         content = { innerPadding -> GameScreenContent(modifier = Modifier.padding(innerPadding), onScoreChange = { newScore ->
-            score = newScore }) })
+            score = newScore },onNavigateToGameOver) })
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun GameScreenTopBar(score:Int) {
+fun GameScreenTopBar(score:Int,onNavigateToHome: () -> Unit) {
     TopAppBar(colors = TopAppBarDefaults.topAppBarColors(
         containerColor = LightBlue
     ), title = {
         Row(verticalAlignment = Alignment.CenterVertically) {
-            IconButton(onClick = { /*TODO*/ }) {
+            IconButton(onClick = { onNavigateToHome() }) {
                 Icon(
                     painter = painterResource(id = R.drawable.back_icon),
                     contentDescription = stringResource(R.string.back),
@@ -107,7 +107,7 @@ fun GameScreenTopBar(score:Int) {
 }
 
 @Composable
-fun GameScreenContent(modifier: Modifier, onScoreChange: (Int) -> Unit) {
+fun GameScreenContent(modifier: Modifier, onScoreChange: (Int) -> Unit,onNavigateToGameOver: () -> Unit) {
     var snakeBody by remember { mutableStateOf(listOf(Offset(100f, 100f))) }
     var foodPosition by remember { mutableStateOf(randomOffset()) }
     var snakeDirection by remember { mutableStateOf(Offset(1f, 0f)) }
@@ -180,5 +180,5 @@ fun randomOffset(): Offset {
 @Composable
 @Preview
 fun GameScreenPrev() {
-    GameScreen()
+    GameScreen(onNavigateToHome={},onNavigateToGameOver={})
 }

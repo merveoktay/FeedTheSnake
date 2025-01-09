@@ -8,7 +8,6 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.Divider
@@ -34,7 +33,7 @@ import com.example.feedthesnake.ui.theme.DarkGrey
 import com.example.feedthesnake.ui.theme.LightBlue
 
 @Composable
-fun ScoreTableScreen() {
+fun ScoreTableScreen(onNavigateToHome: () -> Unit) {
     val scores = listOf(
         Pair("Alice", 95),
         Pair("Bob", 88),
@@ -44,7 +43,7 @@ fun ScoreTableScreen() {
     )
     Scaffold(
         containerColor = LightBlue,
-        topBar = { ScoreTableScreenTopBar() },
+        topBar = { ScoreTableScreenTopBar(onNavigateToHome) },
         content = { innerPadding -> ScoreTableScreenContent(modifier = Modifier.padding(innerPadding),scores) }
 
     )
@@ -52,12 +51,12 @@ fun ScoreTableScreen() {
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun ScoreTableScreenTopBar() {
+fun ScoreTableScreenTopBar(onNavigateToHome: () -> Unit) {
     TopAppBar(colors = TopAppBarDefaults.topAppBarColors(
         containerColor = LightBlue
     ), title = {
         Row(verticalAlignment = Alignment.CenterVertically) {
-            IconButton(onClick = { /*TODO*/ }) {
+            IconButton(onClick = { onNavigateToHome() }) {
                 Icon(
                     painter = painterResource(id = R.drawable.back_icon),
                     contentDescription = stringResource(R.string.back),
@@ -147,5 +146,5 @@ fun ScoreTableScreenContent(modifier: Modifier,scores: List<Pair<String, Int>>) 
 @Composable
 @Preview
 fun ScoreTableScreenPrev() {
-    ScoreTableScreen()
+    ScoreTableScreen(onNavigateToHome={})
 }
