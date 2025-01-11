@@ -36,19 +36,19 @@ import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.feedthesnake.R
 import com.example.feedthesnake.theme.DarkGreen
 import com.example.feedthesnake.theme.LightBlue
 import com.example.feedthesnake.theme.Orange
+import com.example.feedthesnake.viewModel.SnakeViewModel
 import kotlinx.coroutines.delay
 import kotlin.math.abs
 import kotlin.random.Random
 
 @Composable
-fun GameScreen(onNavigateToHome: () -> Unit,onNavigateToGameOver: () -> Unit) {
+fun GameScreen(name:String,onNavigateToHome: () -> Unit,onNavigateToGameOver: (Int) -> Unit,snakeViewModel: SnakeViewModel) {
     var score by remember {
         mutableIntStateOf(0)
     }
@@ -108,7 +108,8 @@ fun GameScreenTopBar(score:Int,onNavigateToHome: () -> Unit) {
 }
 
 @Composable
-fun GameScreenContent(modifier: Modifier, onScoreChange: (Int) -> Unit,onNavigateToGameOver: () -> Unit) {
+fun GameScreenContent( modifier: Modifier, onScoreChange: (Int) -> Unit, onNavigateToGameOver: (Int) -> Unit) {
+
     var snakeBody by remember { mutableStateOf(listOf(Offset(100f, 100f))) }
     var foodPosition by remember { mutableStateOf(randomOffset()) }
     var snakeDirection by remember { mutableStateOf(Offset(1f, 0f)) }
@@ -130,13 +131,13 @@ fun GameScreenContent(modifier: Modifier, onScoreChange: (Int) -> Unit,onNavigat
             if (newHead.x < 0 || newHead.x >= canvasSize.width ||
                 newHead.y < 0 || newHead.y >= canvasSize.height
             ) {
-                onNavigateToGameOver()
+                onNavigateToGameOver(score)
                 return@LaunchedEffect
             }
 
             // Yılanın kendine çarpma kontrolü
             if (snakeBody.drop(1).contains(newHead)) {
-                onNavigateToGameOver()
+                onNavigateToGameOver(score)
                 return@LaunchedEffect
             }
 
@@ -162,7 +163,11 @@ fun GameScreenContent(modifier: Modifier, onScoreChange: (Int) -> Unit,onNavigat
                 detectDragGestures { change, dragAmount ->
                     val (dragX, dragY) = dragAmount
                     snakeDirection = when {
-                        abs(dragX) > abs(dragY) -> if (dragX > 0) Offset(1f, 0f) else Offset(-1f, 0f)
+                        abs(dragX) > abs(dragY) -> if (dragX > 0) Offset(1f, 0f) else Offset(
+                            -1f,
+                            0f
+                        )
+
                         else -> if (dragY > 0) Offset(0f, 1f) else Offset(0f, -1f)
                     }
                 }
@@ -195,8 +200,3 @@ fun randomOffset(): Offset {
     )
 }
 
-@Composable
-@Preview
-fun GameScreenPrev() {
-    GameScreen(onNavigateToHome={},onNavigateToGameOver={})
-}

@@ -21,39 +21,55 @@ import com.example.feedthesnake.R
 import com.example.feedthesnake.ui.components.CustomButton
 
 @Composable
-fun HomeScreen(onNavigateToNameEntry: () -> Unit,onNavigateToScoreTable: () -> Unit) {
+fun HomeScreen(onNavigateToNameEntry: () -> Unit, onNavigateToScoreTable: () -> Unit) {
     Scaffold(content = { innerPadding ->
-        HomeScreenContent(modifier = Modifier.padding(innerPadding),onNavigateToNameEntry,onNavigateToScoreTable)
+        HomeScreenContent(
+            modifier = Modifier.padding(innerPadding),
+            onNavigateToNameEntry,
+            onNavigateToScoreTable
+        )
 
     })
 }
 
 @Composable
-fun HomeScreenContent(modifier: Modifier,onNavigateToNameEntry: () -> Unit,onNavigateToScoreTable: () -> Unit) {
-Box (modifier=modifier.fillMaxSize()){
-    Image(
-        painter = painterResource(id = R.drawable.login_background),
-        contentDescription = stringResource(R.string.logo),
-        modifier = modifier.fillMaxSize(1f),
-        contentScale = ContentScale.Crop
-    )
-    Column( modifier = modifier
-        .fillMaxWidth()
-        .wrapContentHeight()
-        .align(Alignment.Center),
-        horizontalAlignment = Alignment.CenterHorizontally) {
+fun HomeScreenContent(
+    modifier: Modifier,
+    onNavigateToNameEntry: () -> Unit,
+    onNavigateToScoreTable: () -> Unit,
+) {
+    Box(modifier = modifier.fillMaxSize()) {
         Image(
-            painter = painterResource(id = R.drawable.login_icon),
+            painter = painterResource(id = R.drawable.login_background),
             contentDescription = stringResource(R.string.logo),
-            modifier = Modifier.size(300.dp),
-            contentScale = ContentScale.Fit
+            modifier = modifier.fillMaxSize(1f),
+            contentScale = ContentScale.Crop
         )
-        CustomButton(text = stringResource(R.string.new_game), onNavigate = onNavigateToNameEntry)
-        CustomButton(text = stringResource(R.string.high_score), onNavigate = onNavigateToScoreTable)
-        CustomButton(text = stringResource(R.string.exit), onNavigate = {})
+        Column(
+            modifier = modifier
+                .fillMaxWidth()
+                .wrapContentHeight()
+                .align(Alignment.Center),
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+            Image(
+                painter = painterResource(id = R.drawable.login_icon),
+                contentDescription = stringResource(R.string.logo),
+                modifier = Modifier.size(300.dp),
+                contentScale = ContentScale.Fit
+            )
+            CustomButton(
+                text = stringResource(R.string.new_game),
+                onNavigate = onNavigateToNameEntry
+            )
+            CustomButton(
+                text = stringResource(R.string.high_score),
+                onNavigate = onNavigateToScoreTable
+            )
+            CustomButton(text = stringResource(R.string.exit), onNavigate = {})
 
+        }
     }
-}
 
 }
 
@@ -61,5 +77,5 @@ Box (modifier=modifier.fillMaxSize()){
 @Composable
 @Preview
 fun HomeScreenPrev() {
-    HomeScreen(onNavigateToNameEntry={},onNavigateToScoreTable={})
+    HomeScreen(onNavigateToNameEntry = {}, onNavigateToScoreTable = {})
 }

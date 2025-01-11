@@ -9,7 +9,7 @@ import com.example.feedthesnake.model.Snake
 
 @Database(entities = [Snake::class], version = 1, exportSchema = false)
 abstract class AppDatabase : RoomDatabase() {
-    abstract fun scoreDao(): SnakeDao
+    abstract fun snakeDao(): SnakeDao
 
     companion object {
         @Volatile

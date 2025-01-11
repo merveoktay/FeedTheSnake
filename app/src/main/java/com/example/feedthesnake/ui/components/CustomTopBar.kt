@@ -15,7 +15,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.example.feedthesnake.R
-import com.example.feedthesnake.ui.theme.LightBlue
+import com.example.feedthesnake.theme.LightBlue
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable

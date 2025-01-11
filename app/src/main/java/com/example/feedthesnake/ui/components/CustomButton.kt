@@ -21,7 +21,8 @@ import com.example.feedthesnake.theme.Green
 fun CustomButton(modifier: Modifier = Modifier, text: String,onNavigate: () -> Unit) {
 
     Button(
-        onClick = {onNavigate()},
+        onClick = {
+            onNavigate()},
         modifier = modifier
             .padding(start = 50.dp, end = 50.dp, top = 10.dp, bottom = 10.dp)
             .fillMaxWidth(),

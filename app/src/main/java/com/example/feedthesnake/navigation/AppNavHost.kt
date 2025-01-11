@@ -1,6 +1,7 @@
 package com.example.feedthesnake.navigation
 
 import androidx.compose.runtime.Composable
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
@@ -11,6 +12,7 @@ import com.example.feedthesnake.ui.presentation.NameEntryScreen
 import com.example.feedthesnake.ui.presentation.ScoreTableScreen
 import com.example.feedthesnake.ui.presentation.SecondSplashScreen
 import com.example.feedthesnake.ui.presentation.SplashScreen
+import com.example.feedthesnake.viewModel.SnakeViewModel
 
 @Composable
 fun AppNavHost() {
@@ -43,10 +45,14 @@ fun AppNavHost() {
                 onNavigateToGame = { navController.navigate("game") })
 
         }
-        composable("game") {
-            GameScreen(onNavigateToHome = { navController.navigate("home") },
-                onNavigateToGameOver = { navController.navigate("game_over") }
-            )
+        composable("game/{name}") {backStackEntry->
+            val snakeViewModel: SnakeViewModel=hiltViewModel()
+            val name=backStackEntry.arguments?.getString("name")
+            if (name != null) {
+                GameScreen(name=name,onNavigateToHome = { navController.navigate("home") },
+                    onNavigateToGameOver = { navController.navigate("game_over") },snakeViewModel
+                )
+            }
         }
         composable("game_over/{score}") {backStackEntry->
             val score = backStackEntry.arguments?.getString("score")?.toIntOrNull() ?: 0
