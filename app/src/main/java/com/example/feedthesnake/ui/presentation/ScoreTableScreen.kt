@@ -29,8 +29,8 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.feedthesnake.R
-import com.example.feedthesnake.ui.theme.DarkGrey
-import com.example.feedthesnake.ui.theme.LightBlue
+import com.example.feedthesnake.theme.DarkGrey
+import com.example.feedthesnake.theme.LightBlue
 
 @Composable
 fun ScoreTableScreen(onNavigateToHome: () -> Unit) {

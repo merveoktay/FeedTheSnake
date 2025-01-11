@@ -1,4 +1,4 @@
-package com.example.feedthesnake.ui.theme
+package com.example.feedthesnake.theme
 
 import androidx.compose.ui.graphics.Color
 

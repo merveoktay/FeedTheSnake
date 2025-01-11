@@ -5,6 +5,7 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -19,8 +20,9 @@ import androidx.compose.ui.unit.sp
 import com.example.feedthesnake.R
 import com.example.feedthesnake.ui.components.CustomButton
 import com.example.feedthesnake.ui.components.CustomTopBar
-import com.example.feedthesnake.ui.theme.DarkGrey
-import com.example.feedthesnake.ui.theme.LightBlue
+import com.example.feedthesnake.theme.DarkGrey
+import com.example.feedthesnake.theme.LightBlue
+import com.example.feedthesnake.theme.customFontFamily
 
 @Composable
 fun GameOverScreen(score: Int,onNavigateToHome: () -> Unit,onNavigateToNameEntry: () -> Unit) {
@@ -53,17 +55,18 @@ fun GameOverScreenContent(modifier: Modifier, score: Int,onNavigateToNameEntry: 
                 .align(Alignment.Center),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            Text(
-                text = stringResource(R.string.game_over),
-                color = DarkGrey,
-                fontSize = 58.sp,
-                modifier = modifier.padding(start = 50.dp, end = 50.dp, bottom = 50.dp)
+            Image(
+                painter = painterResource(id = R.drawable.game_over),
+                contentDescription = stringResource(R.string.logo),
+                modifier = Modifier.size(300.dp),
+
             )
             Text(
                 text = stringResource(R.string.your_score, score),
                 color = DarkGrey,
+                fontFamily = customFontFamily,
                 fontSize = 32.sp,
-                modifier = modifier.padding(start = 50.dp, end = 50.dp, bottom = 50.dp)
+                modifier = modifier.padding(start = 50.dp, end = 50.dp)
             )
             CustomButton(text = stringResource(R.string.try_again), onNavigate = onNavigateToNameEntry)
         }

@@ -1,4 +1,4 @@
-package com.example.feedthesnake.ui.theme
+package com.example.feedthesnake.theme
 
 import android.app.Activity
 import android.os.Build

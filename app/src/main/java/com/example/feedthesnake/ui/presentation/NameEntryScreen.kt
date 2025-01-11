@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.OutlinedTextField
@@ -24,14 +25,13 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import com.example.feedthesnake.R
 import com.example.feedthesnake.ui.components.CustomButton
 import com.example.feedthesnake.ui.components.CustomTopBar
-import com.example.feedthesnake.ui.theme.DarkGreen
-import com.example.feedthesnake.ui.theme.DarkGrey
-import com.example.feedthesnake.ui.theme.Green
-import com.example.feedthesnake.ui.theme.LightBlue
+import com.example.feedthesnake.theme.DarkGreen
+import com.example.feedthesnake.theme.DarkGrey
+import com.example.feedthesnake.theme.Green
+import com.example.feedthesnake.theme.LightBlue
 
 @Composable
 fun NameEntryScreen(onNavigateToHome: () -> Unit,onNavigateToGame: () -> Unit ){
@@ -58,12 +58,12 @@ fun NameEntryScreenContent(modifier: Modifier,onNavigateToGame: () -> Unit) {
                 .align(Alignment.Center),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            Text(
-                text = stringResource(R.string.give_me_a_name),
-                color = DarkGrey,
-                fontSize = 64.sp,
-                modifier = modifier.padding(start = 50.dp, end = 50.dp, bottom = 50.dp)
-            )
+            Image(
+                painter = painterResource(id = R.drawable.give_me_a_name),
+                contentDescription = stringResource(R.string.logo),
+                modifier = Modifier.size(300.dp),
+
+                )
             OutlinedTextField(
                 value = name,
                 onValueChange = { newName ->

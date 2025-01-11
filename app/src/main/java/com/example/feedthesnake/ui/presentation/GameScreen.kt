@@ -40,9 +40,9 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.feedthesnake.R
-import com.example.feedthesnake.ui.theme.DarkGreen
-import com.example.feedthesnake.ui.theme.LightBlue
-import com.example.feedthesnake.ui.theme.Orange
+import com.example.feedthesnake.theme.DarkGreen
+import com.example.feedthesnake.theme.LightBlue
+import com.example.feedthesnake.theme.Orange
 import kotlinx.coroutines.delay
 import kotlin.math.abs
 import kotlin.random.Random
