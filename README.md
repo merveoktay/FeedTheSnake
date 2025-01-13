@@ -35,3 +35,7 @@ A classic snake game developed in **Kotlin** for Android. The project demonstrat
 1. Clone the repository:
    ```bash
    git clone https://github.com/yourusername/feed-the-snake.git
+   
+ 2. Open the project in Android Studio.
+
+ 3. Build and run the app on an emulator or a physical device.
