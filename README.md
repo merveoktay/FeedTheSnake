@@ -1,0 +1,37 @@
+# Feed the Snake
+
+A classic snake game developed in **Kotlin** for Android. The project demonstrates various Android development concepts, including game mechanics, state management, and data persistence with Room.
+
+---
+
+## Features
+
+- **Classic Gameplay**: Move the snake to eat food and grow in size while avoiding collisions.
+- **Score Tracking**: Tracks and displays the player's score during gameplay.
+- **Name Input**: Players can input their name before starting the game.
+- **Database Integration**: Saves player names and high scores using **Room**.
+- **Game Over Screen**: Displays a summary of the game when the snake crashes.
+
+---
+
+## Tech Stack
+
+- **Language**: Kotlin
+- **Architecture**: MVVM
+- **UI Framework**: Jetpack Compose
+- **Dependency Injection**: Hilt
+- **Local Database**: Room
+
+---
+
+## Screenshots
+
+
+
+---
+
+## Installation
+
+1. Clone the repository:
+   ```bash
+   git clone https://github.com/yourusername/feed-the-snake.git
