@@ -26,7 +26,14 @@ A classic snake game developed in **Kotlin** for Android. The project demonstrat
 
 ## Screenshots
 
-
+<p float="left">
+  <img src=https://github.com/merveoktay/FeedTheSnake/blob/master/SplashScreen.png width="28%" />
+  <img src=https://github.com/merveoktay/FeedTheSnake/blob/master/SecondSplashScreen.png width="28%" />
+  <img src=https://github.com/merveoktay/FeedTheSnake/blob/master/HomeScreen.png width="28%" />
+  <img src=https://github.com/merveoktay/FeedTheSnake/blob/master/ScoreTableScreen.pngwidth="28%"  />
+   <img src= width="28%" />
+   <img src= width="28%" />
+  <img src width="28%" />
 
 ---
 
