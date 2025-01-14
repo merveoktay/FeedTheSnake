@@ -36,7 +36,7 @@ import com.example.feedthesnake.theme.Green
 import com.example.feedthesnake.theme.LightBlue
 
 @Composable
-fun NameEntryScreen(onNavigateToHome: () -> Unit,onNavigateToGame: () -> Unit ){
+fun NameEntryScreen(onNavigateToHome: () -> Unit,onNavigateToGame: (String) -> Unit ){
     val context = LocalContext.current
     Scaffold(containerColor = LightBlue,topBar = { CustomTopBar(onNavigateToHome)}, content = { innerPadding ->
 
@@ -44,8 +44,9 @@ fun NameEntryScreen(onNavigateToHome: () -> Unit,onNavigateToGame: () -> Unit ){
     })
 }
 
+@Suppress("UNCHECKED_CAST")
 @Composable
-fun NameEntryScreenContent(context: Context, modifier: Modifier, onNavigateToGame: () -> Unit) {
+fun NameEntryScreenContent(context: Context, modifier: Modifier, onNavigateToGame: (String) -> Unit) {
 
     var name by remember { mutableStateOf("") }
     Box(modifier = modifier.fillMaxSize()) {
@@ -85,7 +86,12 @@ fun NameEntryScreenContent(context: Context, modifier: Modifier, onNavigateToGam
                 )
             )
             SharedPreferencesHelper.saveName(context, name)
-            CustomButton(text = stringResource(R.string.save), onNavigate = onNavigateToGame)
+            CustomButton(
+                text = stringResource(R.string.save),
+                onNavigate = onNavigateToGame as (String?) -> Unit,
+                name = name,
+                context = context
+            )
         }
     }
 }

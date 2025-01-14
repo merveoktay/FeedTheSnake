@@ -27,15 +27,16 @@ import com.example.feedthesnake.theme.LightBlue
 import com.example.feedthesnake.theme.customFontFamily
 
 @Composable
-fun GameOverScreen(score: Int,onNavigateToHome: () -> Unit,onNavigateToNameEntry: () -> Unit) {
-
+fun GameOverScreen(score: Int,onNavigateToHome: () -> Unit,onNavigateToNameEntry: (String?) -> Unit) {
+    val context = LocalContext.current
     Scaffold(
         containerColor = LightBlue,
         topBar = { CustomTopBar(onNavigateToHome) },
         content = { innerPadding ->
             GameOverScreenContent(
                 modifier = Modifier.padding(innerPadding),
-                score = score,onNavigateToNameEntry
+                score = score,onNavigateToNameEntry,
+                context=context
             )
         }
     )
@@ -44,7 +45,12 @@ fun GameOverScreen(score: Int,onNavigateToHome: () -> Unit,onNavigateToNameEntry
 
 
 @Composable
-fun GameOverScreenContent(modifier: Modifier, score: Int,onNavigateToNameEntry: () -> Unit) {
+fun GameOverScreenContent(
+    modifier: Modifier,
+    score: Int,
+    onNavigateToNameEntry: (String?) -> Unit,
+    context: Context
+) {
     Box(modifier = modifier.fillMaxSize()) {
         Image(
             painter = painterResource(id = R.drawable.background),
@@ -71,7 +77,11 @@ fun GameOverScreenContent(modifier: Modifier, score: Int,onNavigateToNameEntry: 
                 fontSize = 32.sp,
                 modifier = modifier.padding(start = 50.dp, end = 50.dp)
             )
-            CustomButton(text = stringResource(R.string.try_again), onNavigate = onNavigateToNameEntry)
+            CustomButton(
+                text = stringResource(R.string.try_again),
+                onNavigate = onNavigateToNameEntry,
+                context = context
+            )
         }
     }
 }

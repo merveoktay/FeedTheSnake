@@ -42,7 +42,7 @@ fun AppNavHost() {
         }
         composable("name_entry") {
             NameEntryScreen(onNavigateToHome = { navController.navigate("home") },
-                onNavigateToGame = { navController.navigate("game") })
+                onNavigateToGame = { name -> navController.navigate("game/$name") })
 
         }
         composable("game/{name}") {backStackEntry->

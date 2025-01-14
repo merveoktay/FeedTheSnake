@@ -1,5 +1,6 @@
 package com.example.feedthesnake.ui.presentation
 
+import android.content.Context
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -13,6 +14,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
@@ -21,9 +23,10 @@ import com.example.feedthesnake.R
 import com.example.feedthesnake.ui.components.CustomButton
 
 @Composable
-fun HomeScreen(onNavigateToNameEntry: () -> Unit, onNavigateToScoreTable: () -> Unit) {
+fun HomeScreen(onNavigateToNameEntry: (String?) -> Unit, onNavigateToScoreTable: (String?) -> Unit) {
+    val context= LocalContext.current
     Scaffold(content = { innerPadding ->
-        HomeScreenContent(
+        HomeScreenContent(context=context,
             modifier = Modifier.padding(innerPadding),
             onNavigateToNameEntry,
             onNavigateToScoreTable
@@ -34,9 +37,11 @@ fun HomeScreen(onNavigateToNameEntry: () -> Unit, onNavigateToScoreTable: () -> 
 
 @Composable
 fun HomeScreenContent(
+    context: Context,
     modifier: Modifier,
-    onNavigateToNameEntry: () -> Unit,
-    onNavigateToScoreTable: () -> Unit,
+    onNavigateToNameEntry: (String?) -> Unit,
+    onNavigateToScoreTable: (String?) -> Unit,
+
 ) {
     Box(modifier = modifier.fillMaxSize()) {
         Image(
@@ -60,19 +65,18 @@ fun HomeScreenContent(
             )
             CustomButton(
                 text = stringResource(R.string.new_game),
-                onNavigate = onNavigateToNameEntry
+                onNavigate = onNavigateToNameEntry, name = "",
+                        context =context
             )
             CustomButton(
                 text = stringResource(R.string.high_score),
-                onNavigate = onNavigateToScoreTable
+                onNavigate = onNavigateToScoreTable, name ="",
+                context =context
             )
-            CustomButton(text = stringResource(R.string.exit), onNavigate = {})
-
+            CustomButton(text = stringResource(R.string.exit), onNavigate = {}, context =context)
         }
     }
-
 }
-
 
 @Composable
 @Preview

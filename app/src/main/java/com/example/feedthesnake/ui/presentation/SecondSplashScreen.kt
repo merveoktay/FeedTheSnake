@@ -38,12 +38,12 @@ fun SecondSplashScreen(onNavigateToHome: () -> Unit){
                 .align(Alignment.Center),
             horizontalAlignment = Alignment.CenterHorizontally       ) {
             Image(
-                painter = painterResource(id = R.drawable.snake),
+                painter = painterResource(id = R.drawable.welcome),
                 contentDescription = stringResource(R.string.logo),
                 modifier = Modifier.size(300.dp),
                 contentScale = ContentScale.Fit
             )
-            Text(text = stringResource(R.string.welcome), color = DarkGreen, fontSize = 64.sp)
+
         }
     }
 }

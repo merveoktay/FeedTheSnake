@@ -3,6 +3,7 @@ plugins {
     alias(libs.plugins.jetbrainsKotlinAndroid)
     alias(libs.plugins.hilt.android)
     kotlin("kapt")
+
 }
 
 android {
@@ -54,6 +55,7 @@ android {
 dependencies {
 
     implementation(libs.room)
+    implementation(libs.room.ktx)
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)
     implementation(libs.androidx.activity.compose)
@@ -72,6 +74,6 @@ dependencies {
     androidTestImplementation(libs.androidx.ui.test.junit4)
     debugImplementation(libs.androidx.ui.tooling)
     debugImplementation(libs.androidx.ui.test.manifest)
-
+    kapt(libs.room.compiler)
     kapt(libs.hilt.compiler)
 }
