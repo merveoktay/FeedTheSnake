@@ -45,26 +45,32 @@ fun AppNavHost() {
                 onNavigateToGame = { name -> navController.navigate("game/$name") })
 
         }
-        composable("game/{name}") {backStackEntry->
-            val snakeViewModel: SnakeViewModel=hiltViewModel()
-            val name=backStackEntry.arguments?.getString("name")
+        composable("game/{name}") { backStackEntry ->
+            val snakeViewModel: SnakeViewModel = hiltViewModel()
+            val name = backStackEntry.arguments?.getString("name")
             if (name != null) {
-                GameScreen(name=name,onNavigateToHome = { navController.navigate("home") },
-                    onNavigateToGameOver = { navController.navigate("game_over") },snakeViewModel
+                GameScreen(
+                    name = name,
+                    onNavigateToHome = { navController.navigate("home") },
+                    onNavigateToGameOver = { score -> navController.navigate("game_over/$score") },
+                    snakeViewModel
                 )
             }
         }
-        composable("game_over/{score}") {backStackEntry->
+        composable("game_over/{score}") { backStackEntry ->
             val score = backStackEntry.arguments?.getString("score")?.toIntOrNull() ?: 0
-            GameOverScreen(score=score,onNavigateToHome = { navController.navigate("home") },
+            GameOverScreen(score = score, onNavigateToHome = { navController.navigate("home") },
                 onNavigateToNameEntry = {
                     navController.navigate("name_entry")
                 }
             )
         }
         composable("score_table") {
-            ScoreTableScreen(onNavigateToHome = { navController.navigate("home") }
+            val snakeViewModel: SnakeViewModel = hiltViewModel()
+            ScoreTableScreen(
+                onNavigateToHome = { navController.navigate("home") }, snakeViewModel
             )
         }
     }
 }
+

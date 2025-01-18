@@ -1,5 +1,6 @@
 package com.example.feedthesnake.ui.presentation
 
+import android.util.Log
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -55,7 +56,7 @@ fun GameScreen(name:String,onNavigateToHome: () -> Unit,onNavigateToGameOver: (I
     Scaffold(
         containerColor = LightBlue,
         topBar = { GameScreenTopBar(score,onNavigateToHome) },
-        content = { innerPadding -> GameScreenContent(modifier = Modifier.padding(innerPadding), onScoreChange = { newScore ->
+        content = { innerPadding -> GameScreenContent(name=name,snakeViewModel=snakeViewModel,modifier = Modifier.padding(innerPadding), onScoreChange = { newScore ->
             score = newScore },onNavigateToGameOver) })
 }
 
@@ -79,7 +80,7 @@ fun GameScreenTopBar(score:Int,onNavigateToHome: () -> Unit) {
                 modifier = Modifier
                     .padding(top = 5.dp, bottom = 5.dp, end = 20.dp)
                     .background(color = Color(0xFF71D46B), shape = RoundedCornerShape(16.dp))
-                    .padding(horizontal = 15.dp, vertical = 5.dp),
+                    .padding(horizontal = 15.dp),
                 contentAlignment = Alignment.CenterEnd
             ) {
                 Column(
@@ -90,7 +91,6 @@ fun GameScreenTopBar(score:Int,onNavigateToHome: () -> Unit) {
                         color = Color.Black,
                         fontSize = 14.sp,
                         fontWeight = FontWeight.Bold,
-                        modifier = Modifier.padding(bottom = 2.dp)
                     )
                     Text(
                         text = score.toString(),
@@ -107,19 +107,37 @@ fun GameScreenTopBar(score:Int,onNavigateToHome: () -> Unit) {
     })
 }
 
-@Composable
-fun GameScreenContent( modifier: Modifier, onScoreChange: (Int) -> Unit, onNavigateToGameOver: (Int) -> Unit) {
+fun randomOffset(canvasWidth: Float, canvasHeight: Float, blockSize: Float): Offset {
+    val random = Random.Default
+    return Offset(
+        x = random.nextInt(from = 0, until = (canvasWidth / blockSize).toInt()) * blockSize,
+        y = random.nextInt(from = 0, until = (canvasHeight / blockSize).toInt()) * blockSize
+    )
+}
 
+
+@Composable
+fun GameScreenContent(
+    name: String,
+    snakeViewModel: SnakeViewModel,
+    modifier: Modifier,
+    onScoreChange: (Int) -> Unit,
+    onNavigateToGameOver: (Int) -> Unit
+) {
     var snakeBody by remember { mutableStateOf(listOf(Offset(100f, 100f))) }
-    var foodPosition by remember { mutableStateOf(randomOffset()) }
+    var foodPosition by remember { mutableStateOf(Offset.Zero) }
     var snakeDirection by remember { mutableStateOf(Offset(1f, 0f)) }
     val blockSize = with(LocalDensity.current) { 20.dp.toPx() }
     var score by remember { mutableIntStateOf(0) }
-
     var canvasSize by remember { mutableStateOf(Size.Zero) }
+    var isGameOver by remember { mutableStateOf(false) } // Game Over bayrağı
+
+    LaunchedEffect(canvasSize) {
+        foodPosition = randomOffset(canvasSize.width, canvasSize.height, blockSize)
+    }
 
     LaunchedEffect(key1 = canvasSize) {
-        while (true) {
+        while (!isGameOver) { // Eğer oyun bitmişse döngü durdurulacak
             delay(200)
 
             val newHead = snakeBody.first().copy(
@@ -127,27 +145,35 @@ fun GameScreenContent( modifier: Modifier, onScoreChange: (Int) -> Unit, onNavig
                 y = snakeBody.first().y + blockSize * snakeDirection.y
             )
 
-            // Duvara çarpma kontrolü
-            if (newHead.x < 0 || newHead.x >= canvasSize.width ||
-                newHead.y < 0 || newHead.y >= canvasSize.height
+            // Canvas sınır kontrolü (duvara çarpma)
+            if (newHead.x < 0 || newHead.x + blockSize > canvasSize.width ||
+                newHead.y < 0 || newHead.y + blockSize > canvasSize.height
             ) {
-                onNavigateToGameOver(score)
+                isGameOver = true
+                snakeViewModel.saveSnake(name,score)
+                Log.d("Kayıt","$name  -  $score")
+                onNavigateToGameOver(score) // Oyun bittiğinde geçiş yap
                 return@LaunchedEffect
             }
 
-            // Yılanın kendine çarpma kontrolü
+            // Kendine çarpma kontrolü
             if (snakeBody.drop(1).contains(newHead)) {
-                onNavigateToGameOver(score)
+                isGameOver = true
+                snakeViewModel.saveSnake(name,score)
+                Log.d("Kayıt","$name  -  $score")
+                onNavigateToGameOver(score) // Oyun bittiğinde geçiş yap
                 return@LaunchedEffect
             }
 
+            // Yılanın pozisyonunu güncelle
             snakeBody = listOf(newHead) + snakeBody.dropLast(1)
 
-            if (newHead.x >= foodPosition.x && newHead.x < foodPosition.x + blockSize &&
-                newHead.y >= foodPosition.y && newHead.y < foodPosition.y + blockSize
-            ) {
+            // Yem yeme kontrolü
+            val headCenter = newHead + Offset(blockSize / 2, blockSize / 2)
+            val foodCenter = foodPosition + Offset(blockSize / 2, blockSize / 2)
+            if ((headCenter - foodCenter).getDistance() < blockSize) {
                 snakeBody = listOf(newHead) + snakeBody
-                foodPosition = randomOffset()
+                foodPosition = randomOffset(canvasSize.width, canvasSize.height, blockSize)
                 score += 5
                 onScoreChange(score)
             }
@@ -160,22 +186,18 @@ fun GameScreenContent( modifier: Modifier, onScoreChange: (Int) -> Unit, onNavig
             .padding(15.dp)
             .border(3.dp, DarkGreen)
             .pointerInput(Unit) {
-                detectDragGestures { change, dragAmount ->
+                detectDragGestures { _, dragAmount ->
                     val (dragX, dragY) = dragAmount
                     snakeDirection = when {
-                        abs(dragX) > abs(dragY) -> if (dragX > 0) Offset(1f, 0f) else Offset(
-                            -1f,
-                            0f
-                        )
-
+                        abs(dragX) > abs(dragY) -> if (dragX > 0) Offset(1f, 0f) else Offset(-1f, 0f)
                         else -> if (dragY > 0) Offset(0f, 1f) else Offset(0f, -1f)
                     }
                 }
             }
     ) {
-        // Canvas boyutlarını güncelle
         canvasSize = size
 
+        // Yılanın gövdesini çiz
         snakeBody.forEach { bodyPart ->
             drawCircle(
                 color = DarkGreen,
@@ -184,6 +206,7 @@ fun GameScreenContent( modifier: Modifier, onScoreChange: (Int) -> Unit, onNavig
             )
         }
 
+        // Yemi çiz
         drawCircle(
             color = Orange,
             center = foodPosition + Offset(blockSize / 2, blockSize / 2),
@@ -192,11 +215,4 @@ fun GameScreenContent( modifier: Modifier, onScoreChange: (Int) -> Unit, onNavig
     }
 }
 
-fun randomOffset(): Offset {
-    val random = Random.Default
-    return Offset(
-        x = random.nextInt(from = 0, until = 300).toFloat(),
-        y = random.nextInt(from = 0, until = 600).toFloat()
-    )
-}
 

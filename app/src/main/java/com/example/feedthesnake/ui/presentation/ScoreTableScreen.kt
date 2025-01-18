@@ -1,5 +1,6 @@
 package com.example.feedthesnake.ui.presentation
 
+import android.util.Log
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -19,32 +20,30 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.feedthesnake.R
+import com.example.feedthesnake.model.Snake
 import com.example.feedthesnake.theme.DarkGrey
 import com.example.feedthesnake.theme.LightBlue
+import com.example.feedthesnake.viewModel.SnakeViewModel
+import kotlinx.coroutines.flow.StateFlow
 
 @Composable
-fun ScoreTableScreen(onNavigateToHome: () -> Unit) {
-    val scores = listOf(
-        Pair("Alice", 95),
-        Pair("Bob", 88),
-        Pair("Charlie", 76),
-        Pair("David", 92),
-        Pair("Eve", 85)
-    )
+fun ScoreTableScreen(onNavigateToHome: () -> Unit,snakeViewModel:SnakeViewModel) {
+    val snakes=snakeViewModel.topSnakes
     Scaffold(
         containerColor = LightBlue,
         topBar = { ScoreTableScreenTopBar(onNavigateToHome) },
-        content = { innerPadding -> ScoreTableScreenContent(modifier = Modifier.padding(innerPadding),scores) }
+        content = { innerPadding -> ScoreTableScreenContent(modifier = Modifier.padding(innerPadding),snakes) }
 
     )
 }
@@ -88,7 +87,9 @@ fun ScoreTableScreenTopBar(onNavigateToHome: () -> Unit) {
 }
 
 @Composable
-fun ScoreTableScreenContent(modifier: Modifier,scores: List<Pair<String, Int>>) {
+fun ScoreTableScreenContent(modifier: Modifier, snakes: StateFlow<List<Snake>>) {
+    val snakeList by snakes.collectAsState(initial = emptyList())
+
     Column(
         modifier = modifier
             .fillMaxWidth()
@@ -120,7 +121,9 @@ fun ScoreTableScreenContent(modifier: Modifier,scores: List<Pair<String, Int>>) 
             modifier = Modifier.fillMaxWidth(),
             contentPadding = PaddingValues(vertical = 3.dp)
         ) {
-            items(scores) { score ->
+
+            items(snakeList) { snake ->
+                Log.d("Listeleme",snake.name)
                 Row(
                     modifier = modifier
                         .fillMaxWidth()
@@ -128,12 +131,12 @@ fun ScoreTableScreenContent(modifier: Modifier,scores: List<Pair<String, Int>>) 
                     horizontalArrangement = Arrangement.SpaceBetween
                 ) {
                     Text(
-                        text = score.first,
+                        text = snake.name,
                         fontSize = 16.sp,
                         color = DarkGrey
                     )
                     Text(
-                        text = score.second.toString(),
+                        text = snake.score.toString(),
                         fontSize = 16.sp,
                         color = DarkGrey
                     )
@@ -143,8 +146,3 @@ fun ScoreTableScreenContent(modifier: Modifier,scores: List<Pair<String, Int>>) 
     }
 }
 
-@Composable
-@Preview
-fun ScoreTableScreenPrev() {
-    ScoreTableScreen(onNavigateToHome={})
-}
