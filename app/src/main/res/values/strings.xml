@@ -14,4 +14,9 @@
     <string name="game_over">Game Over</string>
     <string name="your_score">Your Score : %1$s</string>
     <string name="score_table">Score Table</string>
+    <string name="normal">Normal</string>
+    <string name="easy">Easy</string>
+    <string name="hard">Hard</string>
+    <string name="start">Start</string>
+    <string name="select_difficulty">Select Difficulty</string>
 </resources>

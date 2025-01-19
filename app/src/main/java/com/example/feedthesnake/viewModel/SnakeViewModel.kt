@@ -9,6 +9,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.geometry.Offset
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.feedthesnake.constants.SpeedConstants
 import com.example.feedthesnake.model.Snake
 import com.example.feedthesnake.repository.SnakeRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -24,6 +25,9 @@ class SnakeViewModel @Inject constructor(private val repository: SnakeRepository
 
     private val _score = mutableIntStateOf(0)
     val score: State<Int> = _score
+
+    private val _difficulty = mutableStateOf("Normal") // Varsayılan zorluk seviyesi
+    val difficulty: State<String> get() = _difficulty
 
     init {
         fetchTopSnakes()
@@ -45,6 +49,20 @@ class SnakeViewModel @Inject constructor(private val repository: SnakeRepository
         viewModelScope.launch {
             val snake = Snake(name = name, score = score)
             repository.insertSnake(snake)
+        }
+    }
+
+
+    fun setDifficulty(selectedDifficulty: String) {
+        _difficulty.value = selectedDifficulty
+    }
+
+    fun getSpeed(): Long {
+        return when (_difficulty.value) {
+            "Kolay" -> SpeedConstants.EASY_SPEED
+            "Normal" -> SpeedConstants.NORMAL_SPEED
+            "Zor" -> SpeedConstants.HARD_SPEED
+            else -> SpeedConstants.NORMAL_SPEED
         }
     }
 }

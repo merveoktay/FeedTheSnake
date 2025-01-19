@@ -3,7 +3,6 @@ package com.example.feedthesnake.ui.presentation
 import android.util.Log
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -93,23 +92,23 @@ fun ScoreTableScreenContent(modifier: Modifier, snakes: StateFlow<List<Snake>>) 
     Column(
         modifier = modifier
             .fillMaxWidth()
-            .padding(horizontal = 25.dp),
+            .padding(start=50.dp,end = 50.dp),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Row(
             modifier = modifier
-                .fillMaxWidth()
-                .padding(end = 15.dp, start = 15.dp),
+                .fillMaxWidth(),
+
             horizontalArrangement = Arrangement.SpaceBetween
         ) {
             Text(
-                text = "Name",
+                text = stringResource(R.string.name),
                 fontSize = 18.sp,
                 fontWeight = FontWeight.Bold,
                 color = DarkGrey
             )
             Text(
-                text = "Score",
+                text = stringResource(R.string.score),
                 fontSize = 18.sp,
                 fontWeight = FontWeight.Bold,
                 color = DarkGrey
@@ -119,15 +118,13 @@ fun ScoreTableScreenContent(modifier: Modifier, snakes: StateFlow<List<Snake>>) 
         Divider(color = Color.Black, thickness = 1.dp)
         LazyColumn(
             modifier = Modifier.fillMaxWidth(),
-            contentPadding = PaddingValues(vertical = 3.dp)
         ) {
 
             items(snakeList) { snake ->
                 Log.d("Listeleme",snake.name)
                 Row(
                     modifier = modifier
-                        .fillMaxWidth()
-                        .padding(end = 15.dp, start = 15.dp),
+                        .fillMaxWidth(),
                     horizontalArrangement = Arrangement.SpaceBetween
                 ) {
                     Text(

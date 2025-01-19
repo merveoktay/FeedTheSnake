@@ -1,5 +1,6 @@
 package com.example.feedthesnake.ui.presentation
 
+import android.content.Context
 import android.util.Log
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.background
@@ -33,6 +34,7 @@ import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.pointer.pointerInput
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -40,6 +42,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.feedthesnake.R
+import com.example.feedthesnake.model.SharedPreferencesHelper
 import com.example.feedthesnake.theme.DarkGreen
 import com.example.feedthesnake.theme.LightBlue
 import com.example.feedthesnake.theme.Orange
@@ -49,15 +52,23 @@ import kotlin.math.abs
 import kotlin.random.Random
 
 @Composable
-fun GameScreen(name:String,onNavigateToHome: () -> Unit,onNavigateToGameOver: (Int) -> Unit,snakeViewModel: SnakeViewModel) {
+fun GameScreen(
+    name: String,
+    onNavigateToHome: () -> Unit,
+    onNavigateToGameOver: (Int) -> Unit,
+    snakeViewModel: SnakeViewModel
+) {
+    val context = LocalContext.current
     var score by remember {
         mutableIntStateOf(0)
     }
     Scaffold(
         containerColor = LightBlue,
         topBar = { GameScreenTopBar(score,onNavigateToHome) },
-        content = { innerPadding -> GameScreenContent(name=name,snakeViewModel=snakeViewModel,modifier = Modifier.padding(innerPadding), onScoreChange = { newScore ->
-            score = newScore },onNavigateToGameOver) })
+        content = { innerPadding -> GameScreenContent(context=context,name=name,snakeViewModel=snakeViewModel,modifier = Modifier.padding(innerPadding), onScoreChange = { newScore ->
+            score = newScore },
+            onNavigateToGameOver = onNavigateToGameOver
+        ) })
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -122,7 +133,8 @@ fun GameScreenContent(
     snakeViewModel: SnakeViewModel,
     modifier: Modifier,
     onScoreChange: (Int) -> Unit,
-    onNavigateToGameOver: (Int) -> Unit
+    onNavigateToGameOver: (Int) -> Unit,
+    context: Context
 ) {
     var snakeBody by remember { mutableStateOf(listOf(Offset(100f, 100f))) }
     var foodPosition by remember { mutableStateOf(Offset.Zero) }
@@ -138,7 +150,7 @@ fun GameScreenContent(
 
     LaunchedEffect(key1 = canvasSize) {
         while (!isGameOver) { // Eğer oyun bitmişse döngü durdurulacak
-            delay(200)
+            delay(SharedPreferencesHelper.getDifficulty(context =context))
 
             val newHead = snakeBody.first().copy(
                 x = snakeBody.first().x + blockSize * snakeDirection.x,

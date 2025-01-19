@@ -17,7 +17,6 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.feedthesnake.R
 import com.example.feedthesnake.ui.components.CustomButton
@@ -65,21 +64,19 @@ fun HomeScreenContent(
             )
             CustomButton(
                 text = stringResource(R.string.new_game),
-                onNavigate = onNavigateToNameEntry, name = "",
-                        context =context
+                onNavigate = onNavigateToNameEntry,
+                context =context
             )
             CustomButton(
                 text = stringResource(R.string.high_score),
-                onNavigate = onNavigateToScoreTable, name ="",
+                onNavigate =onNavigateToScoreTable,
                 context =context
             )
-            CustomButton(text = stringResource(R.string.exit), onNavigate = {}, context =context)
+            CustomButton(
+                text = stringResource(R.string.exit),
+                onNavigate = { },
+                context =context
+            )
         }
     }
-}
-
-@Composable
-@Preview
-fun HomeScreenPrev() {
-    HomeScreen(onNavigateToNameEntry = {}, onNavigateToScoreTable = {})
 }

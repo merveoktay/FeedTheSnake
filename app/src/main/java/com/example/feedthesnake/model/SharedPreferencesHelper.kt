@@ -3,21 +3,21 @@ package com.example.feedthesnake.model
 import android.content.Context
 import android.content.SharedPreferences
 object SharedPreferencesHelper {
-    private const val PREFS_NAME = "game_prefs"
-    private const val KEY_NAME = "name"
+    private const val PREFS_DIFFICULTY = "game_prefs"
+    private const val KEY_DIFFICULTY = "difficulty"
 
     private fun getPreferences(context: Context): SharedPreferences {
-        return context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)
+        return context.getSharedPreferences(PREFS_DIFFICULTY, Context.MODE_PRIVATE)
     }
 
-    fun saveName(context: Context, name: String) {
+    fun saveDifficulty(context: Context, difficulty:Long) {
         val preferences = getPreferences(context)
-        preferences.edit().putString(KEY_NAME, name).apply()
+        preferences.edit().putLong(KEY_DIFFICULTY, difficulty).apply()
     }
 
-    fun getName(context: Context): String {
+    fun getDifficulty(context: Context): Long {
         val preferences = getPreferences(context)
-        return preferences.getString(KEY_NAME, "") ?: ""
+        return preferences.getLong(KEY_DIFFICULTY, 0)
     }
 
 }
