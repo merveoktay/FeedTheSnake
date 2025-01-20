@@ -27,9 +27,7 @@ private val LightColorScheme = lightColorScheme(
     tertiary = Green,
 
     background = LightBlue,
-    surface = DarkGrey,
-    onPrimary = Yellow,
-    onSecondary = Orange,
+    surface = DarkGrey
 
 
 )
@@ -37,7 +35,6 @@ private val LightColorScheme = lightColorScheme(
 @Composable
 fun FeedTheSnakeTheme(
     darkTheme: Boolean = isSystemInDarkTheme(),
-    // Dynamic color is available on Android 12+
     dynamicColor: Boolean = true,
     content: @Composable () -> Unit
 ) {
@@ -47,7 +44,7 @@ fun FeedTheSnakeTheme(
             if (darkTheme) dynamicDarkColorScheme(context) else dynamicLightColorScheme(context)
         }
 
-        darkTheme -> DarkColorScheme
+        darkTheme -> LightColorScheme
         else -> LightColorScheme
     }
     val view = LocalView.current

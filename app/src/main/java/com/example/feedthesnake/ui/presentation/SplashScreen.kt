@@ -20,7 +20,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import com.example.feedthesnake.R
 import com.example.feedthesnake.constants.SizeConstants
-
+import com.example.feedthesnake.ui.AnimationHelper
 
 
 @Composable

@@ -1,4 +1,4 @@
-package com.example.feedthesnake.ui.presentation
+package com.example.feedthesnake.ui
 
 import androidx.compose.animation.animateColor
 import androidx.compose.animation.core.LinearEasing

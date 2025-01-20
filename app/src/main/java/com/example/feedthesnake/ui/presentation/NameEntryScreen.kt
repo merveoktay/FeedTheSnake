@@ -14,6 +14,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.OutlinedTextField
+import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.material3.OutlinedTextFieldDefaults.colors
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
@@ -102,7 +103,12 @@ fun NameEntryScreenContent(
                 colors = colors(
                     focusedBorderColor = Green,
                     unfocusedBorderColor = DarkGreen,
-                    cursorColor = DarkGrey
+                    cursorColor = DarkGrey,
+                    focusedLabelColor = DarkGrey,
+                    unfocusedLabelColor = DarkGrey,
+                    focusedTextColor = DarkGrey,
+                    disabledTextColor = DarkGrey
+
                 )
             )
             Text(
