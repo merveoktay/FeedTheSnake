@@ -10,11 +10,11 @@ import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
+import androidx.compose.ui.res.stringResource
+import com.example.feedthesnake.R
+import com.example.feedthesnake.constants.SizeConstants
 import com.example.feedthesnake.theme.DarkGreen
 import com.example.feedthesnake.theme.Green
-
 
 
 @Composable
@@ -23,23 +23,29 @@ fun CustomButton(
     text: String,
     onNavigate: (String?) -> Unit,
     name: String? = null,
-    context: Context
+    context: Context,
 ) {
-
+    val buttonText = stringResource(R.string.exit)
     Button(
         onClick = {
-            if(text=="Exit"){
+            if (text == buttonText) {
                 (context as Activity).finishAffinity()
+            } else {
+                onNavigate(name)
             }
-            else{
-            onNavigate(name)}},
+        },
         modifier = modifier
-            .padding(start = 50.dp, end = 50.dp, top = 10.dp, bottom = 10.dp)
+            .padding(
+                start = SizeConstants.MAX_PADDING_SIZE,
+                end = SizeConstants.MAX_PADDING_SIZE,
+                top = SizeConstants.SMALL_PADDING_SIZE,
+                bottom = SizeConstants.SMALL_PADDING_SIZE
+            )
             .fillMaxWidth(),
         colors = ButtonDefaults.buttonColors(Green),
-        border = BorderStroke(2.dp, DarkGreen)
+        border = BorderStroke(SizeConstants.BUTTON_CORNER_SHAPE_SIZE, DarkGreen)
     ) {
-        Text(text = text, color = DarkGreen, fontSize = 26.sp)
+        Text(text = text, color = DarkGreen, fontSize = SizeConstants.BUTTON_FONT_SIZE)
     }
 }
 

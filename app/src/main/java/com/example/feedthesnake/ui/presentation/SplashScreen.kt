@@ -1,5 +1,6 @@
 package com.example.feedthesnake.ui.presentation
 
+
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -12,21 +13,37 @@ import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.geometry.Offset
+import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.dp
 import com.example.feedthesnake.R
-import com.example.feedthesnake.theme.LightBlue
+import com.example.feedthesnake.constants.SizeConstants
+
 
 
 @Composable
-fun SplashScreen(onNavigateToSecondSplash: () -> Unit){
+fun SplashScreen(onNavigateToSecondSplash: () -> Unit) {
+    val infiniteTransition = AnimationHelper.infiniteTransitionFloat()
+
+    val animatedOffsetX = AnimationHelper.infiniteFloatTransition(infiniteTransition)
+
+    val animatedColor1 = AnimationHelper.firstAnimatedColor(infiniteTransition)
+
+    val animatedColor2 = AnimationHelper.secondAnimatedColor(infiniteTransition)
+
     Box(
         modifier = Modifier
             .fillMaxSize()
-            .background(LightBlue).clickable { onNavigateToSecondSplash() }
+            .background(
+                Brush.linearGradient(
+                    colors = listOf(animatedColor1.value, animatedColor2.value),
+                    start = Offset(animatedOffsetX.value, SizeConstants.MIN_ANIMATED_OFFSET),
+                    end = Offset(animatedOffsetX.value + SizeConstants.MAX_ANIMATED_OFFSET, SizeConstants.MAX_ANIMATED_OFFSET)
+                )
+            )
+            .clickable { onNavigateToSecondSplash() }
     ) {
         Column(
             modifier = Modifier
@@ -38,15 +55,9 @@ fun SplashScreen(onNavigateToSecondSplash: () -> Unit){
             Image(
                 painter = painterResource(id = R.drawable.login_icon),
                 contentDescription = stringResource(R.string.logo),
-                modifier = Modifier.size(300.dp),
+                modifier = Modifier.size(SizeConstants.IMAGE_MAX_SIZE),
                 contentScale = ContentScale.Fit
             )
         }
     }
-}
-
-@Composable
-@Preview
-fun SplashScreenPrev(){
-    SplashScreen(onNavigateToSecondSplash = {})
 }

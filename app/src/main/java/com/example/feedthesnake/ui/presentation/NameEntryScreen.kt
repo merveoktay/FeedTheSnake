@@ -15,8 +15,6 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.OutlinedTextFieldDefaults.colors
-import androidx.compose.material3.RadioButton
-import androidx.compose.material3.RadioButtonDefaults
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -31,9 +29,8 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import com.example.feedthesnake.R
+import com.example.feedthesnake.constants.SizeConstants
 import com.example.feedthesnake.constants.SpeedConstants
 import com.example.feedthesnake.model.SharedPreferencesHelper
 import com.example.feedthesnake.ui.components.CustomButton
@@ -42,20 +39,34 @@ import com.example.feedthesnake.theme.DarkGreen
 import com.example.feedthesnake.theme.DarkGrey
 import com.example.feedthesnake.theme.Green
 import com.example.feedthesnake.theme.LightBlue
+import com.example.feedthesnake.ui.components.CustomRadioButton
 
 @Composable
-fun NameEntryScreen(onNavigateToHome: () -> Unit, onNavigateToGame: (String) -> Unit){
+fun NameEntryScreen(onNavigateToHome: () -> Unit, onNavigateToGame: (String) -> Unit) {
     val context = LocalContext.current
-    Scaffold(containerColor = LightBlue,topBar = { CustomTopBar(onNavigateToHome)}, content = { innerPadding ->
+    Scaffold(
+        containerColor = LightBlue,
+        topBar = { CustomTopBar(onNavigateToHome) },
+        content = { innerPadding ->
 
-        NameEntryScreenContent(context, modifier = Modifier.padding(innerPadding), onNavigateToGame)
-    })
+            NameEntryScreenContent(
+                context,
+                modifier = Modifier.padding(innerPadding),
+                onNavigateToGame
+            )
+        })
 }
 
 @Composable
-fun NameEntryScreenContent(context: Context, modifier: Modifier, onNavigateToGame: (String) -> Unit) {
-    var selectedDifficulty by remember { mutableStateOf("Normal") }
-
+fun NameEntryScreenContent(
+    context: Context,
+    modifier: Modifier,
+    onNavigateToGame: (String) -> Unit,
+) {
+    val easy= stringResource(R.string.easy)
+    val normal= stringResource(R.string.normal)
+    val hard= stringResource(R.string.hard)
+    var selectedDifficulty by remember { mutableStateOf(normal) }
     var name by remember { mutableStateOf("") }
     Box(modifier = modifier.fillMaxSize()) {
         Image(
@@ -68,12 +79,13 @@ fun NameEntryScreenContent(context: Context, modifier: Modifier, onNavigateToGam
             modifier = modifier
                 .fillMaxSize()
                 .align(Alignment.Center),
-           horizontalAlignment = Alignment.CenterHorizontally
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.Top
         ) {
             Image(
                 painter = painterResource(id = R.drawable.give_me_a_name),
                 contentDescription = stringResource(R.string.logo),
-                modifier = Modifier.size(300.dp),
+                modifier = Modifier.size(SizeConstants.IMAGE_MIN_SIZE),
 
                 )
             OutlinedTextField(
@@ -84,9 +96,9 @@ fun NameEntryScreenContent(context: Context, modifier: Modifier, onNavigateToGam
                 label = { Text(stringResource(R.string.name), color = DarkGrey) },
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(start = 50.dp, end = 50.dp),
+                    .padding(SizeConstants.MAX_PADDING_SIZE, SizeConstants.MAX_PADDING_SIZE),
                 singleLine = true,
-                shape = RoundedCornerShape(50.dp),
+                shape = RoundedCornerShape(SizeConstants.MAX_CORNER_SHAPE_SIZE),
                 colors = colors(
                     focusedBorderColor = Green,
                     unfocusedBorderColor = DarkGreen,
@@ -95,64 +107,50 @@ fun NameEntryScreenContent(context: Context, modifier: Modifier, onNavigateToGam
             )
             Text(
                 text = stringResource(R.string.select_difficulty),
-                fontSize = 16.sp,
+                fontSize = SizeConstants.MEDIUM_FONT_SIZE,
                 fontWeight = FontWeight.Bold,
                 color = DarkGrey,
-                modifier = Modifier.padding(top = 20.dp)
+                modifier = Modifier.padding(top = SizeConstants.MEDIUM_PADDING_SIZE)
             )
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(horizontal = 50.dp, vertical = 10.dp),
+                    .padding(horizontal = SizeConstants.MAX_PADDING_SIZE, vertical = SizeConstants.SMALL_PADDING_SIZE),
                 horizontalArrangement = Arrangement.SpaceAround
             ) {
-                RadioButtonWithLabel(
+                CustomRadioButton(
                     label = stringResource(R.string.easy),
                     selected = selectedDifficulty == stringResource(R.string.easy),
-                    onClick = { selectedDifficulty = "Easy" }
+                    onClick = { selectedDifficulty = easy }
                 )
-                RadioButtonWithLabel(
+                CustomRadioButton(
                     label = stringResource(R.string.normal),
                     selected = selectedDifficulty == stringResource(R.string.normal),
-                    onClick = { selectedDifficulty = "Normal" }
+                    onClick = { selectedDifficulty = normal }
                 )
-                RadioButtonWithLabel(
+                CustomRadioButton(
                     label = stringResource(R.string.hard),
                     selected = selectedDifficulty == stringResource(R.string.hard),
-                    onClick = { selectedDifficulty = "Hard" }
+                    onClick = { selectedDifficulty = hard }
                 )
             }
             val speed = when (selectedDifficulty) {
-                "Easy" -> SpeedConstants.EASY_SPEED
-                "Normal" -> SpeedConstants.NORMAL_SPEED
-                "Hard" -> SpeedConstants.HARD_SPEED
+                easy -> SpeedConstants.EASY_SPEED
+                normal -> SpeedConstants.NORMAL_SPEED
+                hard -> SpeedConstants.HARD_SPEED
                 else -> SpeedConstants.NORMAL_SPEED
             }
-            SharedPreferencesHelper.saveDifficulty(context,speed )
-            CustomButton(
-                text = stringResource(R.string.start),
-                onNavigate = onNavigateToGame as (String?) -> Unit,
-                name = name,
-                context = context
-            )
+            SharedPreferencesHelper.saveDifficulty(context, speed)
+            if (name.isNotEmpty()) {
+                CustomButton(
+                    text = stringResource(R.string.start),
+                    onNavigate = onNavigateToGame as (String?) -> Unit,
+                    name = name,
+                    context = context
+                )
+            }
         }
     }
 }
-@Composable
-fun RadioButtonWithLabel(label: String, selected: Boolean, onClick: () -> Unit) {
-    Row(verticalAlignment = Alignment.CenterVertically) {
-        RadioButton(
-            selected = selected,
-            onClick = onClick,
-            colors = RadioButtonDefaults.colors(
-                selectedColor = Green,
-                unselectedColor = DarkGreen
-            )
-        )
-        Text(
-            text = label,
-            fontSize = 14.sp,
-            color = DarkGrey
-        )
-    }
-}
+
+

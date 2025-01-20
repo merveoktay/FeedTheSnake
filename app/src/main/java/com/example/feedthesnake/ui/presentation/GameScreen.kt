@@ -42,8 +42,10 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.feedthesnake.R
+import com.example.feedthesnake.constants.SizeConstants
 import com.example.feedthesnake.model.SharedPreferencesHelper
 import com.example.feedthesnake.theme.DarkGreen
+import com.example.feedthesnake.theme.Green
 import com.example.feedthesnake.theme.LightBlue
 import com.example.feedthesnake.theme.Orange
 import com.example.feedthesnake.viewModel.SnakeViewModel
@@ -83,15 +85,15 @@ fun GameScreenTopBar(score:Int,onNavigateToHome: () -> Unit) {
                     painter = painterResource(id = R.drawable.back_icon),
                     contentDescription = stringResource(R.string.back),
                     tint = Color.Unspecified,
-                    modifier = Modifier.size(35.dp)
+                    modifier = Modifier.size(SizeConstants.ICON_SIZE)
                 )
             }
             Spacer(modifier = Modifier.weight(1f))
             Box(
                 modifier = Modifier
-                    .padding(top = 5.dp, bottom = 5.dp, end = 20.dp)
-                    .background(color = Color(0xFF71D46B), shape = RoundedCornerShape(16.dp))
-                    .padding(horizontal = 15.dp),
+                    .padding(top = SizeConstants.MIN_PADDING_SIZE, bottom = SizeConstants.MIN_PADDING_SIZE, end = SizeConstants.MEDIUM_PADDING_SIZE)
+                    .background(color = Green, shape = RoundedCornerShape(SizeConstants.MIN_CORNER_SHAPE_SIZE))
+                    .padding(horizontal =SizeConstants.SMALL_PADDING_SIZE),
                 contentAlignment = Alignment.CenterEnd
             ) {
                 Column(
@@ -100,13 +102,13 @@ fun GameScreenTopBar(score:Int,onNavigateToHome: () -> Unit) {
                     Text(
                         text = stringResource(R.string.score),
                         color = Color.Black,
-                        fontSize = 14.sp,
+                        fontSize = SizeConstants.MIN_FONT_SIZE,
                         fontWeight = FontWeight.Bold,
                     )
                     Text(
                         text = score.toString(),
                         color = Color.Black,
-                        fontSize = 16.sp,
+                        fontSize = SizeConstants.MIN_FONT_SIZE,
                         fontWeight = FontWeight.Bold
                     )
                 }
@@ -136,10 +138,10 @@ fun GameScreenContent(
     onNavigateToGameOver: (Int) -> Unit,
     context: Context
 ) {
-    var snakeBody by remember { mutableStateOf(listOf(Offset(100f, 100f))) }
+    var snakeBody by remember { mutableStateOf(listOf(Offset(SizeConstants.MAX_OFFSET_SIZE, SizeConstants.MAX_OFFSET_SIZE))) }
     var foodPosition by remember { mutableStateOf(Offset.Zero) }
-    var snakeDirection by remember { mutableStateOf(Offset(1f, 0f)) }
-    val blockSize = with(LocalDensity.current) { 20.dp.toPx() }
+    var snakeDirection by remember { mutableStateOf(Offset(SizeConstants.MEDIUM_OFFSET_SIZE, SizeConstants.MIN_OFFSET_SIZE)) }
+    val blockSize = with(LocalDensity.current) { SizeConstants.BLOCK_SIZE.toPx() }
     var score by remember { mutableIntStateOf(0) }
     var canvasSize by remember { mutableStateOf(Size.Zero) }
     var isGameOver by remember { mutableStateOf(false) } // Game Over bayrağı
@@ -149,7 +151,7 @@ fun GameScreenContent(
     }
 
     LaunchedEffect(key1 = canvasSize) {
-        while (!isGameOver) { // Eğer oyun bitmişse döngü durdurulacak
+        while (!isGameOver) {
             delay(SharedPreferencesHelper.getDifficulty(context =context))
 
             val newHead = snakeBody.first().copy(
@@ -163,17 +165,15 @@ fun GameScreenContent(
             ) {
                 isGameOver = true
                 snakeViewModel.saveSnake(name,score)
-                Log.d("Kayıt","$name  -  $score")
-                onNavigateToGameOver(score) // Oyun bittiğinde geçiş yap
+                onNavigateToGameOver(score)
                 return@LaunchedEffect
             }
 
             // Kendine çarpma kontrolü
-            if (snakeBody.drop(1).contains(newHead)) {
+            if (snakeBody.drop(SizeConstants.DROP_SIZE).contains(newHead)) {
                 isGameOver = true
                 snakeViewModel.saveSnake(name,score)
-                Log.d("Kayıt","$name  -  $score")
-                onNavigateToGameOver(score) // Oyun bittiğinde geçiş yap
+                onNavigateToGameOver(score)
                 return@LaunchedEffect
             }
 
@@ -181,12 +181,12 @@ fun GameScreenContent(
             snakeBody = listOf(newHead) + snakeBody.dropLast(1)
 
             // Yem yeme kontrolü
-            val headCenter = newHead + Offset(blockSize / 2, blockSize / 2)
-            val foodCenter = foodPosition + Offset(blockSize / 2, blockSize / 2)
+            val headCenter = newHead + Offset(blockSize / SizeConstants.BLOCK_SIZE_DIVIDER, blockSize / SizeConstants.BLOCK_SIZE_DIVIDER)
+            val foodCenter = foodPosition + Offset(blockSize / SizeConstants.BLOCK_SIZE_DIVIDER, blockSize / SizeConstants.BLOCK_SIZE_DIVIDER)
             if ((headCenter - foodCenter).getDistance() < blockSize) {
                 snakeBody = listOf(newHead) + snakeBody
                 foodPosition = randomOffset(canvasSize.width, canvasSize.height, blockSize)
-                score += 5
+                score +=SizeConstants.SCORE
                 onScoreChange(score)
             }
         }
@@ -195,34 +195,32 @@ fun GameScreenContent(
     Canvas(
         modifier = modifier
             .fillMaxSize()
-            .padding(15.dp)
-            .border(3.dp, DarkGreen)
+            .padding(SizeConstants.SMALL_PADDING_SIZE)
+            .border(SizeConstants.BORDER_SIZE, DarkGreen)
             .pointerInput(Unit) {
                 detectDragGestures { _, dragAmount ->
                     val (dragX, dragY) = dragAmount
                     snakeDirection = when {
-                        abs(dragX) > abs(dragY) -> if (dragX > 0) Offset(1f, 0f) else Offset(-1f, 0f)
-                        else -> if (dragY > 0) Offset(0f, 1f) else Offset(0f, -1f)
+                        abs(dragX) > abs(dragY) -> if (dragX > 0) Offset(SizeConstants.MEDIUM_OFFSET_SIZE, SizeConstants.MIN_OFFSET_SIZE) else Offset(-SizeConstants.MEDIUM_OFFSET_SIZE, SizeConstants.MIN_OFFSET_SIZE)
+                        else -> if (dragY > 0) Offset(SizeConstants.MIN_OFFSET_SIZE, SizeConstants.MEDIUM_OFFSET_SIZE) else Offset(SizeConstants.MIN_OFFSET_SIZE, -SizeConstants.MEDIUM_OFFSET_SIZE)
                     }
                 }
             }
     ) {
         canvasSize = size
 
-        // Yılanın gövdesini çiz
         snakeBody.forEach { bodyPart ->
             drawCircle(
                 color = DarkGreen,
-                center = bodyPart + Offset(blockSize / 2, blockSize / 2),
-                radius = blockSize / 2
+                center = bodyPart + Offset(blockSize / SizeConstants.BLOCK_SIZE_DIVIDER, blockSize / SizeConstants.BLOCK_SIZE_DIVIDER),
+                radius = blockSize / SizeConstants.BLOCK_SIZE_DIVIDER
             )
         }
 
-        // Yemi çiz
         drawCircle(
             color = Orange,
-            center = foodPosition + Offset(blockSize / 2, blockSize / 2),
-            radius = blockSize / 2
+            center = foodPosition + Offset(blockSize / SizeConstants.BLOCK_SIZE_DIVIDER, blockSize / SizeConstants.BLOCK_SIZE_DIVIDER),
+            radius = blockSize / SizeConstants.BLOCK_SIZE_DIVIDER
         )
     }
 }

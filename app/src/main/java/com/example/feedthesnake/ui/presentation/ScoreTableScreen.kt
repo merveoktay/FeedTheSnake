@@ -1,6 +1,5 @@
 package com.example.feedthesnake.ui.presentation
 
-import android.util.Log
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -27,9 +26,8 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import com.example.feedthesnake.R
+import com.example.feedthesnake.constants.SizeConstants
 import com.example.feedthesnake.model.Snake
 import com.example.feedthesnake.theme.DarkGrey
 import com.example.feedthesnake.theme.LightBlue
@@ -59,25 +57,25 @@ fun ScoreTableScreenTopBar(onNavigateToHome: () -> Unit) {
                     painter = painterResource(id = R.drawable.back_icon),
                     contentDescription = stringResource(R.string.back),
                     tint = Color.Unspecified,
-                    modifier = Modifier.size(35.dp)
+                    modifier = Modifier.size(SizeConstants.ICON_SIZE)
                 )
             }
-            Spacer(modifier = Modifier.weight(1f))
+            Spacer(modifier = Modifier.weight(SizeConstants.WEIGHT_SIZE))
             Text(
                 text = stringResource(R.string.score_table),
                 color = DarkGrey,
-                fontSize = 32.sp,
+                fontSize = SizeConstants.MAX_FONT_SIZE,
                 fontWeight = FontWeight.Bold,
-                modifier = Modifier.padding(bottom = 2.dp)
+                modifier = Modifier.padding(bottom = SizeConstants.MIN_PADDING_SIZE)
             )
-            Spacer(modifier = Modifier.weight(1f))
+            Spacer(modifier = Modifier.weight(SizeConstants.WEIGHT_SIZE))
             Icon(
                 painter = painterResource(id = R.drawable.score_icon),
                 contentDescription = stringResource(R.string.score),
                 tint = Color.Unspecified,
                 modifier = Modifier
-                    .size(55.dp)
-                    .padding(end = 20.dp)
+                    .size(SizeConstants.MODIFIER_SIZE)
+                    .padding(end = SizeConstants.MEDIUM_PADDING_SIZE)
             )
 
         }
@@ -92,7 +90,7 @@ fun ScoreTableScreenContent(modifier: Modifier, snakes: StateFlow<List<Snake>>) 
     Column(
         modifier = modifier
             .fillMaxWidth()
-            .padding(start=50.dp,end = 50.dp),
+            .padding(start= SizeConstants.MAX_PADDING_SIZE,end = SizeConstants.MAX_PADDING_SIZE),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Row(
@@ -103,25 +101,24 @@ fun ScoreTableScreenContent(modifier: Modifier, snakes: StateFlow<List<Snake>>) 
         ) {
             Text(
                 text = stringResource(R.string.name),
-                fontSize = 18.sp,
+                fontSize = SizeConstants.MEDIUM_FONT_SIZE,
                 fontWeight = FontWeight.Bold,
                 color = DarkGrey
             )
             Text(
                 text = stringResource(R.string.score),
-                fontSize = 18.sp,
+                fontSize = SizeConstants.MEDIUM_FONT_SIZE,
                 fontWeight = FontWeight.Bold,
                 color = DarkGrey
             )
         }
 
-        Divider(color = Color.Black, thickness = 1.dp)
+        Divider(color = Color.Black, thickness = SizeConstants.DIVIDER_THICKNESS_SIZE)
         LazyColumn(
             modifier = Modifier.fillMaxWidth(),
         ) {
 
             items(snakeList) { snake ->
-                Log.d("Listeleme",snake.name)
                 Row(
                     modifier = modifier
                         .fillMaxWidth(),
@@ -129,12 +126,12 @@ fun ScoreTableScreenContent(modifier: Modifier, snakes: StateFlow<List<Snake>>) 
                 ) {
                     Text(
                         text = snake.name,
-                        fontSize = 16.sp,
+                        fontSize = SizeConstants.MIN_FONT_SIZE,
                         color = DarkGrey
                     )
                     Text(
                         text = snake.score.toString(),
-                        fontSize = 16.sp,
+                        fontSize = SizeConstants.MIN_FONT_SIZE,
                         color = DarkGrey
                     )
                 }

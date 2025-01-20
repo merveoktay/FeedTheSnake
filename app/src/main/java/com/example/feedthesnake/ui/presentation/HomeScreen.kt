@@ -17,8 +17,8 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.unit.dp
 import com.example.feedthesnake.R
+import com.example.feedthesnake.constants.SizeConstants
 import com.example.feedthesnake.ui.components.CustomButton
 
 @Composable
@@ -46,7 +46,7 @@ fun HomeScreenContent(
         Image(
             painter = painterResource(id = R.drawable.login_background),
             contentDescription = stringResource(R.string.logo),
-            modifier = modifier.fillMaxSize(1f),
+            modifier = modifier.fillMaxSize(),
             contentScale = ContentScale.Crop
         )
         Column(
@@ -59,7 +59,7 @@ fun HomeScreenContent(
             Image(
                 painter = painterResource(id = R.drawable.login_icon),
                 contentDescription = stringResource(R.string.logo),
-                modifier = Modifier.size(300.dp),
+                modifier = Modifier.size(SizeConstants.IMAGE_MAX_SIZE),
                 contentScale = ContentScale.Fit
             )
             CustomButton(
