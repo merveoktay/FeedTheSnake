@@ -64,7 +64,6 @@ fun SecondSplashScreen(onNavigateToHome: () -> Unit) {
                 .align(Alignment.Center),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            // Image with animated alpha value
             Image(
                 painter = painterResource(id = R.drawable.welcome),
                 contentDescription = stringResource(R.string.logo),

@@ -1,12 +1,8 @@
 package com.example.feedthesnake.viewModel
 
-import android.util.Log
 import androidx.compose.runtime.State
-import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.setValue
-import androidx.compose.ui.geometry.Offset
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.feedthesnake.constants.SpeedConstants
@@ -33,14 +29,13 @@ class SnakeViewModel @Inject constructor(private val repository: SnakeRepository
         fetchTopSnakes()
     }
 
-    private fun fetchTopSnakes() {
+    fun fetchTopSnakes() {
         viewModelScope.launch {
             try {
             val scores = repository.getTopSnakes()
             _topSnakes.value = scores
             } catch (e: Exception) {
-                // Hata logu ekleyin
-                Log.e("SnakeViewModel", "Error fetching top snakes", e)
+
             }
         }
     }

@@ -114,10 +114,7 @@ fun ScoreTableScreenContent(modifier: Modifier, snakes: StateFlow<List<Snake>>) 
         }
 
         Divider(color = Color.Black, thickness = SizeConstants.DIVIDER_THICKNESS_SIZE)
-        LazyColumn(
-            modifier = Modifier.fillMaxWidth(),
-        ) {
-
+        LazyColumn{
             items(snakeList) { snake ->
                 Row(
                     modifier = modifier
@@ -134,7 +131,9 @@ fun ScoreTableScreenContent(modifier: Modifier, snakes: StateFlow<List<Snake>>) 
                         fontSize = SizeConstants.MIN_FONT_SIZE,
                         color = DarkGrey
                     )
+
                 }
+
             }
         }
     }

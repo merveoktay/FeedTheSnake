@@ -12,6 +12,16 @@ roomVersion="2.6.1"
 navigationCompose = "2.8.5"
 hiltVersion="2.51.1"
 hiltNavigationVersion="1.2.0"
+coroutinesTestVersion="1.7.3"
+coreTestingVersion="2.2.0"
+mockitoCoreVersion="4.11.0"
+mockitoKotlinVersion="4.1.0"
+mockitoInlineVersion="4.7.0"
+turbineVersion="0.12.1"
+roomTestingVersion="2.6.1"
+runner = "1.6.2"
+coreKtxVersion = "1.6.1"
+core = "1.47.0"
 
 [libraries]
 
@@ -36,6 +46,16 @@ androidx-navigation-compose = { group = "androidx.navigation", name = "navigatio
 hilt={group="com.google.dagger",name="hilt-android",version.ref="hiltVersion"}
 hilt_compiler={group="com.google.dagger",name="hilt-compiler",version.ref="hiltVersion"}
 hilt_navigation_compose={module="androidx.hilt:hilt-navigation-compose",version.ref="hiltNavigationVersion"}
+coroutines_test={group="org.jetbrains.kotlinx", name="kotlinx-coroutines-test",version.ref="coroutinesTestVersion"}
+core_testing={group="androidx.arch.core",name="core-testing",version.ref="coreTestingVersion"}
+mockito_core={group="org.mockito",name="mockito-core",version.ref="mockitoCoreVersion"}
+mockito_kotlin={group="org.mockito.kotlin",name="mockito-kotlin",version.ref="mockitoKotlinVersion"}
+mockito_inline={group="org.mockito",name="mockito-inline",version.ref="mockitoInlineVersion"}
+turbine={group="app.cash.turbine",name="turbine",version.ref="turbineVersion"}
+room_testing={group="androidx.room",name="room-testing",version.ref="roomTestingVersion"}
+androidx-runner = { group = "androidx.test", name = "runner", version.ref = "runner" }
+core-ktx = { group = "androidx.test", name = "core-ktx", version.ref = "coreKtxVersion" }
+core = { group = "com.google.ar", name = "core", version.ref = "core" }
 
 [plugins]
 compose-compiler = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }
