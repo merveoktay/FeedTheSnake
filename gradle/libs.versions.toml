@@ -14,7 +14,7 @@ hiltVersion="2.51.1"
 hiltNavigationVersion="1.2.0"
 coroutinesTestVersion="1.7.3"
 coreTestingVersion="2.2.0"
-mockitoCoreVersion="4.11.0"
+mockitoCoreVersion="5.5.0"
 mockitoKotlinVersion="4.1.0"
 mockitoInlineVersion="4.7.0"
 turbineVersion="0.12.1"
@@ -22,6 +22,8 @@ roomTestingVersion="2.6.1"
 runner = "1.6.2"
 coreKtxVersion = "1.6.1"
 core = "1.47.0"
+mockkVersion="1.13.7"
+navigationTestingVersion="2.7.2"
 
 [libraries]
 
@@ -56,6 +58,8 @@ room_testing={group="androidx.room",name="room-testing",version.ref="roomTesting
 androidx-runner = { group = "androidx.test", name = "runner", version.ref = "runner" }
 core-ktx = { group = "androidx.test", name = "core-ktx", version.ref = "coreKtxVersion" }
 core = { group = "com.google.ar", name = "core", version.ref = "core" }
+mockk={group="io.mockk",name="mockk",version.ref="mockkVersion"}
+navigation_testing={group="androidx.navigation",name="navigation-testing",version.ref="navigationTestingVersion"}
 
 [plugins]
 compose-compiler = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }

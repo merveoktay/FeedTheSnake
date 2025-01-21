@@ -51,6 +51,9 @@ android {
             excludes += "/META-INF/{AL2.0,LGPL2.1}"
         }
     }
+    testOptions{
+        unitTests.isReturnDefaultValues=true
+    }
 }
 
 dependencies {
@@ -79,10 +82,16 @@ dependencies {
     testImplementation(libs.coroutines.test)
     testImplementation(libs.turbine)
     testImplementation(libs.room.testing)
+    testImplementation(libs.mockk)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
     androidTestImplementation(platform(libs.androidx.compose.bom))
     androidTestImplementation(libs.androidx.ui.test.junit4)
+    androidTestImplementation(libs.core.testing)
+    androidTestImplementation(libs.core.testing)
+    androidTestImplementation(libs.core.testing)
+    androidTestImplementation(libs.core.testing)
+   androidTestImplementation(libs.navigation.testing)
     debugImplementation(libs.androidx.ui.tooling)
     debugImplementation(libs.androidx.ui.test.manifest)
     kapt(libs.room.compiler)

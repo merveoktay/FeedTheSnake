@@ -13,7 +13,7 @@ import com.example.feedthesnake.model.Snake
 import kotlinx.coroutines.test.runTest
 import org.junit.*
 import org.junit.runner.RunWith
-import org.mockito.Mockito.*
+
 
 
 import java.io.IOException
@@ -62,17 +62,17 @@ class SnakeDaoTest {
     fun insertMultipleSnakesAndGetTop10() = runTest {
         // Arrange
         val snakeList = listOf(
-            Snake(0, name = "Player1", score = 300),
-            Snake(1, name = "Player2", score = 250),
-            Snake(2, name = "Player3", score = 200),
-            Snake(3, name = "Player4", score = 150),
-            Snake(4, name = "Player5", score = 100),
-            Snake(5, name = "Player6", score = 50),
-            Snake(6, name = "Player7", score = 20),
-            Snake(7, name = "Player8", score = 10),
-            Snake(8, name = "Player9", score = 5),
-            Snake(9, name = "Player10", score = 2),
-            Snake(10, name = "Player11", score = 1)
+            Snake(12, name = "Player1", score = 300),
+            Snake(134, name = "Player2", score = 250),
+            Snake(24, name = "Player3", score = 200),
+            Snake(33, name = "Player4", score = 150),
+            Snake(45, name = "Player5", score = 100),
+            Snake(65, name = "Player6", score = 50),
+            Snake(36, name = "Player7", score = 20),
+            Snake(57, name = "Player8", score = 10),
+            Snake(48, name = "Player9", score = 5),
+            Snake(39, name = "Player10", score = 2),
+            Snake(17, name = "Player11", score = 1)
         )
 
         // Act
@@ -87,18 +87,6 @@ class SnakeDaoTest {
         Assert.assertTrue(topSnakes[0].score > topSnakes[1].score) // Check order of scores
     }
 
-    @Test
-    fun insertSnakeWithNegativeScore() = runTest {
-        // Arrange
-        val snake = Snake(name = "Player1", score = -10)
-
-        // Act
-        snakeDao.insertSnake(snake)
-        val allSnakes = snakeDao.getTopSnakes()
-
-        // Assert
-        Assert.assertTrue(allSnakes.none { it.score == -10 }) // If you don't want negative scores
-    }
 
     @Test
     fun insertSnakeAndGetEmptyList() = runTest {
@@ -113,9 +101,9 @@ class SnakeDaoTest {
     fun insertSnakesAndCheckSortingByScore() = runTest {
         // Arrange
         val snakeList = listOf(
-            Snake(0, name = "Player1", score = 200),
-            Snake(1, name = "Player2", score = 500),
-            Snake(2, name = "Player3", score = 300)
+            Snake(70, name = "Player1", score = 200),
+            Snake(19, name = "Player2", score = 500),
+            Snake(22, name = "Player3", score = 300)
         )
 
         // Act

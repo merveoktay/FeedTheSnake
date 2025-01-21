@@ -58,6 +58,7 @@ fun SplashScreen(onNavigateToSecondSplash: () -> Unit) {
                 modifier = Modifier.size(SizeConstants.IMAGE_MAX_SIZE),
                 contentScale = ContentScale.Fit
             )
+
         }
     }
 }
