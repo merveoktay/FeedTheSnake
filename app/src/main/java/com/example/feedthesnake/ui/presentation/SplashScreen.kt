@@ -11,6 +11,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Offset
@@ -32,6 +33,10 @@ fun SplashScreen(onNavigateToSecondSplash: () -> Unit) {
     val animatedColor1 = AnimationHelper.firstAnimatedColor(infiniteTransition)
 
     val animatedColor2 = AnimationHelper.secondAnimatedColor(infiniteTransition)
+    LaunchedEffect(Unit) {
+        kotlinx.coroutines.delay(3000)
+        onNavigateToSecondSplash()
+    }
 
     Box(
         modifier = Modifier
@@ -42,8 +47,7 @@ fun SplashScreen(onNavigateToSecondSplash: () -> Unit) {
                     start = Offset(animatedOffsetX.value, SizeConstants.MIN_ANIMATED_OFFSET),
                     end = Offset(animatedOffsetX.value + SizeConstants.MAX_ANIMATED_OFFSET, SizeConstants.MAX_ANIMATED_OFFSET)
                 )
-            )
-            .clickable { onNavigateToSecondSplash() }
+            ).clickable { onNavigateToSecondSplash() }
     ) {
         Column(
             modifier = Modifier

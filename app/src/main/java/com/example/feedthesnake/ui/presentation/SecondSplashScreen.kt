@@ -45,6 +45,8 @@ fun SecondSplashScreen(onNavigateToHome: () -> Unit) {
             targetValue = 1f,
             animationSpec = tween(durationMillis = 1500, easing = FastOutSlowInEasing)
         )
+        kotlinx.coroutines.delay(3000)
+        onNavigateToHome()
     }
 
     Box(

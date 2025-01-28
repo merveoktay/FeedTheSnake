@@ -97,7 +97,7 @@ fun NameEntryScreenContent(
                 label = { Text(stringResource(R.string.name), color = DarkGrey) },
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(SizeConstants.MAX_PADDING_SIZE, SizeConstants.MAX_PADDING_SIZE),
+                    .padding(SizeConstants.MEDIUM_PADDING_SIZE, SizeConstants.MAX_PADDING_SIZE),
                 singleLine = true,
                 shape = RoundedCornerShape(SizeConstants.MAX_CORNER_SHAPE_SIZE),
                 colors = colors(

@@ -1,7 +1,6 @@
 package com.example.feedthesnake.ui.presentation
 
 import android.content.Context
-import android.util.Log
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -39,8 +38,6 @@ import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import com.example.feedthesnake.R
 import com.example.feedthesnake.constants.SizeConstants
 import com.example.feedthesnake.model.SharedPreferencesHelper
@@ -204,6 +201,7 @@ fun GameScreenContent(
                         abs(dragX) > abs(dragY) -> if (dragX > 0) Offset(SizeConstants.MEDIUM_OFFSET_SIZE, SizeConstants.MIN_OFFSET_SIZE) else Offset(-SizeConstants.MEDIUM_OFFSET_SIZE, SizeConstants.MIN_OFFSET_SIZE)
                         else -> if (dragY > 0) Offset(SizeConstants.MIN_OFFSET_SIZE, SizeConstants.MEDIUM_OFFSET_SIZE) else Offset(SizeConstants.MIN_OFFSET_SIZE, -SizeConstants.MEDIUM_OFFSET_SIZE)
                     }
+
                 }
             }
     ) {
