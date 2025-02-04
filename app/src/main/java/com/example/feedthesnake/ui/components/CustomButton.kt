@@ -13,7 +13,10 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
 import com.example.feedthesnake.R
-import com.example.feedthesnake.constants.SizeConstants
+import com.example.feedthesnake.constants.SizeConstants.BUTTON_CORNER_SHAPE_SIZE
+import com.example.feedthesnake.constants.SizeConstants.BUTTON_FONT_SIZE
+import com.example.feedthesnake.constants.SizeConstants.MAX_PADDING_SIZE
+import com.example.feedthesnake.constants.SizeConstants.SMALL_PADDING_SIZE
 import com.example.feedthesnake.theme.DarkGreen
 import com.example.feedthesnake.theme.Green
 
@@ -37,16 +40,16 @@ fun CustomButton(
         },
         modifier = modifier.testTag(text)
             .padding(
-                start = SizeConstants.MAX_PADDING_SIZE,
-                end = SizeConstants.MAX_PADDING_SIZE,
-                top = SizeConstants.SMALL_PADDING_SIZE,
-                bottom = SizeConstants.SMALL_PADDING_SIZE
+                start = MAX_PADDING_SIZE,
+                end = MAX_PADDING_SIZE,
+                top = SMALL_PADDING_SIZE,
+                bottom = SMALL_PADDING_SIZE
             )
             .fillMaxWidth(),
         colors = ButtonDefaults.buttonColors(Green),
-        border = BorderStroke(SizeConstants.BUTTON_CORNER_SHAPE_SIZE, DarkGreen)
+        border = BorderStroke(BUTTON_CORNER_SHAPE_SIZE, DarkGreen)
     ) {
-        Text(text = text, color = DarkGreen, fontSize = SizeConstants.BUTTON_FONT_SIZE)
+        Text(text = text, color = DarkGreen, fontSize = BUTTON_FONT_SIZE)
     }
 }
 

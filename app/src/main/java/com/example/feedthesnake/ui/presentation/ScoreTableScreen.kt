@@ -28,7 +28,16 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import com.example.feedthesnake.R
-import com.example.feedthesnake.constants.SizeConstants
+import com.example.feedthesnake.constants.SizeConstants.DIVIDER_THICKNESS_SIZE
+import com.example.feedthesnake.constants.SizeConstants.ICON_SIZE
+import com.example.feedthesnake.constants.SizeConstants.MAX_FONT_SIZE
+import com.example.feedthesnake.constants.SizeConstants.MAX_PADDING_SIZE
+import com.example.feedthesnake.constants.SizeConstants.MEDIUM_FONT_SIZE
+import com.example.feedthesnake.constants.SizeConstants.MEDIUM_PADDING_SIZE
+import com.example.feedthesnake.constants.SizeConstants.MIN_FONT_SIZE
+import com.example.feedthesnake.constants.SizeConstants.MIN_PADDING_SIZE
+import com.example.feedthesnake.constants.SizeConstants.MODIFIER_SIZE
+import com.example.feedthesnake.constants.SizeConstants.WEIGHT_SIZE
 import com.example.feedthesnake.model.Snake
 import com.example.feedthesnake.theme.DarkGrey
 import com.example.feedthesnake.theme.LightBlue
@@ -59,25 +68,25 @@ fun ScoreTableScreenTopBar(onNavigateToHome: () -> Unit) {
                     painter = painterResource(id = R.drawable.back_icon),
                     contentDescription = stringResource(R.string.back),
                     tint = Color.Unspecified,
-                    modifier = Modifier.size(SizeConstants.ICON_SIZE)
+                    modifier = Modifier.size(ICON_SIZE)
                 )
             }
-            Spacer(modifier = Modifier.weight(SizeConstants.WEIGHT_SIZE))
+            Spacer(modifier = Modifier.weight(WEIGHT_SIZE))
             Text(
                 text = stringResource(R.string.score_table),
                 color = DarkGrey,
-                fontSize = SizeConstants.MAX_FONT_SIZE,
+                fontSize = MAX_FONT_SIZE,
                 fontWeight = FontWeight.Bold,
-                modifier = Modifier.padding(bottom = SizeConstants.MIN_PADDING_SIZE)
+                modifier = Modifier.padding(bottom = MIN_PADDING_SIZE)
             )
-            Spacer(modifier = Modifier.weight(SizeConstants.WEIGHT_SIZE))
+            Spacer(modifier = Modifier.weight(WEIGHT_SIZE))
             Icon(
                 painter = painterResource(id = R.drawable.score_icon),
                 contentDescription = stringResource(R.string.score),
                 tint = Color.Unspecified,
                 modifier = Modifier
-                    .size(SizeConstants.MODIFIER_SIZE)
-                    .padding(end = SizeConstants.MEDIUM_PADDING_SIZE)
+                    .size(MODIFIER_SIZE)
+                    .padding(end = MEDIUM_PADDING_SIZE)
             )
 
         }
@@ -92,7 +101,7 @@ fun ScoreTableScreenContent(modifier: Modifier, snakes: StateFlow<List<Snake>>) 
     Column(
         modifier = modifier
             .fillMaxWidth()
-            .padding(start= SizeConstants.MAX_PADDING_SIZE,end = SizeConstants.MAX_PADDING_SIZE),
+            .padding(start= MAX_PADDING_SIZE,end = MAX_PADDING_SIZE),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Row(
@@ -103,19 +112,19 @@ fun ScoreTableScreenContent(modifier: Modifier, snakes: StateFlow<List<Snake>>) 
         ) {
             Text(
                 text = stringResource(R.string.name),
-                fontSize = SizeConstants.MEDIUM_FONT_SIZE,
+                fontSize = MEDIUM_FONT_SIZE,
                 fontWeight = FontWeight.Bold,
                 color = DarkGrey
             )
             Text(
                 text = stringResource(R.string.score),
-                fontSize = SizeConstants.MEDIUM_FONT_SIZE,
+                fontSize =MEDIUM_FONT_SIZE,
                 fontWeight = FontWeight.Bold,
                 color = DarkGrey
             )
         }
 
-        Divider(color = Color.Black, thickness = SizeConstants.DIVIDER_THICKNESS_SIZE)
+        Divider(color = Color.Black, thickness = DIVIDER_THICKNESS_SIZE)
         LazyColumn{
             items(snakeList) { snake ->
                 Row(
@@ -125,12 +134,12 @@ fun ScoreTableScreenContent(modifier: Modifier, snakes: StateFlow<List<Snake>>) 
                 ) {
                     Text(
                         text = snake.name,
-                        fontSize = SizeConstants.MIN_FONT_SIZE,
+                        fontSize = MIN_FONT_SIZE,
                         color = DarkGrey
                     )
                     Text(
                         text = snake.score.toString(),
-                        fontSize = SizeConstants.MIN_FONT_SIZE,
+                        fontSize = MIN_FONT_SIZE,
                         color = DarkGrey
                     )
 

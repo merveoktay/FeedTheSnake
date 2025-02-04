@@ -25,7 +25,9 @@ import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import com.example.feedthesnake.R
-import com.example.feedthesnake.constants.SizeConstants
+import com.example.feedthesnake.constants.SizeConstants.IMAGE_MAX_SIZE
+import com.example.feedthesnake.constants.SizeConstants.MAX_ANIMATED_OFFSET
+import com.example.feedthesnake.constants.SizeConstants.MIN_ANIMATED_OFFSET
 import com.example.feedthesnake.ui.AnimationHelper
 
 @Composable
@@ -55,8 +57,8 @@ fun SecondSplashScreen(onNavigateToHome: () -> Unit) {
             .fillMaxSize().testTag("SecondSplashScreen")
             .background( Brush.linearGradient(
                 colors = listOf(animatedColor1.value, animatedColor2.value),
-                start = Offset(animatedOffsetX.value, SizeConstants.MIN_ANIMATED_OFFSET),
-                end = Offset(animatedOffsetX.value + SizeConstants.MAX_ANIMATED_OFFSET, SizeConstants.MAX_ANIMATED_OFFSET)
+                start = Offset(animatedOffsetX.value, MIN_ANIMATED_OFFSET),
+                end = Offset(animatedOffsetX.value + MAX_ANIMATED_OFFSET, MAX_ANIMATED_OFFSET)
             ))
             .clickable { onNavigateToHome() }
     ) {
@@ -71,8 +73,8 @@ fun SecondSplashScreen(onNavigateToHome: () -> Unit) {
                 painter = painterResource(id = R.drawable.welcome),
                 contentDescription = stringResource(R.string.logo),
                 modifier = Modifier
-                    .size(SizeConstants.IMAGE_MAX_SIZE)
-                    .graphicsLayer(alpha = alpha.value), // Apply the animated alpha value
+                    .size(IMAGE_MAX_SIZE)
+                    .graphicsLayer(alpha = alpha.value),
                 contentScale = ContentScale.Fit
             )
         }

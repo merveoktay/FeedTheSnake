@@ -19,7 +19,7 @@ import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import com.example.feedthesnake.R
-import com.example.feedthesnake.constants.SizeConstants
+import com.example.feedthesnake.constants.SizeConstants.IMAGE_MAX_SIZE
 import com.example.feedthesnake.ui.components.CustomButton
 
 @Composable
@@ -62,7 +62,7 @@ fun HomeScreenContent(
             Image(
                 painter = painterResource(id = R.drawable.login_icon),
                 contentDescription = stringResource(R.string.logo),
-                modifier = Modifier.size(SizeConstants.IMAGE_MAX_SIZE),
+                modifier = Modifier.size(IMAGE_MAX_SIZE),
                 contentScale = ContentScale.Fit
             )
             CustomButton(

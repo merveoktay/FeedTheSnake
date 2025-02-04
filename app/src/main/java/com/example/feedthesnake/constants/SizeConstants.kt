@@ -17,6 +17,9 @@ object SizeConstants {
     val SMALL_PADDING_SIZE = 10.dp
     val MIN_PADDING_SIZE = 5.dp
 
+    val COLUMN_SIZE=150.dp
+    val WIDTH_SIZE=24.dp
+
     val MAX_CORNER_SHAPE_SIZE = 50.dp
     val MIN_CORNER_SHAPE_SIZE = 16.dp
     val BUTTON_CORNER_SHAPE_SIZE = 2.dp

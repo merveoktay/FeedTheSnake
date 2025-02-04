@@ -1,11 +1,18 @@
 package com.example.feedthesnake.viewModel
 
+import android.util.Log
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.geometry.Size
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.feedthesnake.constants.SizeConstants.BLOCK_SIZE_DIVIDER
+import com.example.feedthesnake.constants.SizeConstants.DROP_SIZE
+import com.example.feedthesnake.constants.SizeConstants.MAX_OFFSET_SIZE
+import com.example.feedthesnake.constants.SizeConstants.MEDIUM_OFFSET_SIZE
+import com.example.feedthesnake.constants.SizeConstants.MIN_OFFSET_SIZE
+import com.example.feedthesnake.constants.SizeConstants.SCORE
 import com.example.feedthesnake.model.Snake
 import com.example.feedthesnake.repository.SnakeRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -24,13 +31,13 @@ class SnakeViewModel @Inject constructor(private val repository: SnakeRepository
     private val _score = mutableIntStateOf(0)
     val score: State<Int> = _score
 
-    private val _snakeBody = MutableStateFlow(listOf(Offset(100f, 100f)))
+    private val _snakeBody = MutableStateFlow(listOf(Offset(MAX_OFFSET_SIZE, MAX_OFFSET_SIZE)))
     val snakeBody: StateFlow<List<Offset>> get() = _snakeBody
 
-    private val _foodPosition = MutableStateFlow(Offset(100f, 100f))
+    private val _foodPosition = MutableStateFlow(Offset(MAX_OFFSET_SIZE, MAX_OFFSET_SIZE))
     val foodPosition: StateFlow<Offset> get() = _foodPosition
 
-    private val _snakeDirection = MutableStateFlow(Offset(1f, 0f)) // Başlangıçta sağa gidiyor
+    private val _snakeDirection = MutableStateFlow(Offset(MEDIUM_OFFSET_SIZE, MIN_OFFSET_SIZE))
     val snakeDirection: StateFlow<Offset> get() = _snakeDirection
 
     private val _isGameOver = MutableStateFlow(false)
@@ -46,7 +53,7 @@ class SnakeViewModel @Inject constructor(private val repository: SnakeRepository
                 val scores = repository.getTopSnakes()
                 _topSnakes.value = scores
             } catch (e: Exception) {
-                // Hata yönetimi eklenebilir
+                Log.d("Error",e.message.toString())
             }
         }
     }
@@ -58,22 +65,19 @@ class SnakeViewModel @Inject constructor(private val repository: SnakeRepository
         }
     }
 
-    // Yemek konumunu rastgele belirleme
     fun initializeFood(width: Float, height: Float, blockSize: Float) {
         _foodPosition.value = randomOffset(width, height, blockSize)
     }
 
-    // Yılan hareketi fonksiyonu
     fun moveSnake(blockSize: Float, canvasSize: Size, name: String, onGameOver: (Int) -> Unit) {
         val newHead = _snakeBody.value.first().copy(
             x = _snakeBody.value.first().x + blockSize * _snakeDirection.value.x,
             y = _snakeBody.value.first().y + blockSize * _snakeDirection.value.y
         )
 
-        // Duvara veya kendine çarpma kontrolü
         if (newHead.x < 0 || newHead.x + blockSize > canvasSize.width ||
             newHead.y < 0 || newHead.y + blockSize > canvasSize.height ||
-            _snakeBody.value.drop(1).contains(newHead)
+            _snakeBody.value.drop(DROP_SIZE).contains(newHead)
         ) {
             _isGameOver.value = true
             saveSnake(name, _score.intValue)
@@ -81,23 +85,21 @@ class SnakeViewModel @Inject constructor(private val repository: SnakeRepository
             return
         }
 
-        // Yem yeme kontrolü
-        val headCenter = newHead + Offset(blockSize / 2, blockSize / 2)
-        val foodCenter = _foodPosition.value + Offset(blockSize / 2, blockSize / 2)
+        val headCenter = newHead + Offset(blockSize / BLOCK_SIZE_DIVIDER, blockSize / BLOCK_SIZE_DIVIDER)
+        val foodCenter = _foodPosition.value + Offset(blockSize / BLOCK_SIZE_DIVIDER, blockSize / BLOCK_SIZE_DIVIDER)
         if ((headCenter - foodCenter).getDistance() < blockSize) {
             _snakeBody.value = listOf(newHead) + _snakeBody.value
             _foodPosition.value = randomOffset(canvasSize.width, canvasSize.height, blockSize)
-            _score.value += 10
+            _score.value += SCORE
         } else {
-            _snakeBody.value = listOf(newHead) + _snakeBody.value.dropLast(1)
+            _snakeBody.value = listOf(newHead) + _snakeBody.value.dropLast(DROP_SIZE)
         }
     }
 
-    // Yön güncelleme fonksiyonu
     fun updateDirection(dragX: Float, dragY: Float) {
         _snakeDirection.value = when {
-            abs(dragX) > abs(dragY) -> if (dragX > 0) Offset(1f, 0f) else Offset(-1f, 0f)
-            else -> if (dragY > 0) Offset(0f, 1f) else Offset(0f, -1f)
+            abs(dragX) > abs(dragY) -> if (dragX > 0) Offset(MEDIUM_OFFSET_SIZE, MIN_OFFSET_SIZE) else Offset(-MEDIUM_OFFSET_SIZE, MIN_OFFSET_SIZE)
+            else -> if (dragY > 0) Offset(MIN_OFFSET_SIZE, MEDIUM_OFFSET_SIZE) else Offset(MIN_OFFSET_SIZE, -MEDIUM_OFFSET_SIZE)
         }
     }
     private fun randomOffset(width: Float, height: Float, blockSize: Float): Offset {

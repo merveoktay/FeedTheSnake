@@ -18,7 +18,9 @@ import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import com.example.feedthesnake.R
-import com.example.feedthesnake.constants.SizeConstants
+import com.example.feedthesnake.constants.SizeConstants.IMAGE_MAX_SIZE
+import com.example.feedthesnake.constants.SizeConstants.MAX_FONT_SIZE
+import com.example.feedthesnake.constants.SizeConstants.MAX_PADDING_SIZE
 import com.example.feedthesnake.ui.components.CustomButton
 import com.example.feedthesnake.ui.components.CustomTopBar
 import com.example.feedthesnake.theme.DarkGrey
@@ -66,15 +68,15 @@ fun GameOverScreenContent(
             Image(
                 painter = painterResource(id = R.drawable.game_over),
                 contentDescription = stringResource(R.string.logo),
-                modifier = Modifier.size(SizeConstants.IMAGE_MAX_SIZE),
+                modifier = Modifier.size(IMAGE_MAX_SIZE),
 
             )
             Text(
                 text = stringResource(R.string.your_score, score),
                 color = DarkGrey,
                 fontFamily = customFontFamily,
-                fontSize = SizeConstants.MAX_FONT_SIZE,
-                modifier = modifier.padding(start = SizeConstants.MAX_PADDING_SIZE, end = SizeConstants.MAX_PADDING_SIZE)
+                fontSize = MAX_FONT_SIZE,
+                modifier = modifier.padding(start = MAX_PADDING_SIZE, end = MAX_PADDING_SIZE)
             )
             CustomButton(
                 text = stringResource(R.string.try_again),

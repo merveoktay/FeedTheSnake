@@ -21,7 +21,9 @@ import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import com.example.feedthesnake.R
-import com.example.feedthesnake.constants.SizeConstants
+import com.example.feedthesnake.constants.SizeConstants.IMAGE_MAX_SIZE
+import com.example.feedthesnake.constants.SizeConstants.MAX_ANIMATED_OFFSET
+import com.example.feedthesnake.constants.SizeConstants.MIN_ANIMATED_OFFSET
 import com.example.feedthesnake.ui.AnimationHelper
 
 
@@ -45,8 +47,8 @@ fun SplashScreen(onNavigateToSecondSplash: () -> Unit) {
             .background(
                 Brush.linearGradient(
                     colors = listOf(animatedColor1.value, animatedColor2.value),
-                    start = Offset(animatedOffsetX.value, SizeConstants.MIN_ANIMATED_OFFSET),
-                    end = Offset(animatedOffsetX.value + SizeConstants.MAX_ANIMATED_OFFSET, SizeConstants.MAX_ANIMATED_OFFSET)
+                    start = Offset(animatedOffsetX.value, MIN_ANIMATED_OFFSET),
+                    end = Offset(animatedOffsetX.value + MAX_ANIMATED_OFFSET, MAX_ANIMATED_OFFSET)
                 )
             ).clickable { onNavigateToSecondSplash() }
     ) {
@@ -60,7 +62,7 @@ fun SplashScreen(onNavigateToSecondSplash: () -> Unit) {
             Image(
                 painter = painterResource(id = R.drawable.login_icon),
                 contentDescription = stringResource(R.string.logo),
-                modifier = Modifier.size(SizeConstants.IMAGE_MAX_SIZE),
+                modifier = Modifier.size(IMAGE_MAX_SIZE),
                 contentScale = ContentScale.Fit
             )
 

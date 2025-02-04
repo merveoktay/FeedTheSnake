@@ -14,7 +14,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.OutlinedTextField
-import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.material3.OutlinedTextFieldDefaults.colors
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
@@ -32,8 +31,15 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import com.example.feedthesnake.R
-import com.example.feedthesnake.constants.SizeConstants
-import com.example.feedthesnake.constants.SpeedConstants
+import com.example.feedthesnake.constants.SizeConstants.IMAGE_MIN_SIZE
+import com.example.feedthesnake.constants.SizeConstants.MAX_CORNER_SHAPE_SIZE
+import com.example.feedthesnake.constants.SizeConstants.MAX_PADDING_SIZE
+import com.example.feedthesnake.constants.SizeConstants.MEDIUM_FONT_SIZE
+import com.example.feedthesnake.constants.SizeConstants.MEDIUM_PADDING_SIZE
+import com.example.feedthesnake.constants.SizeConstants.SMALL_PADDING_SIZE
+import com.example.feedthesnake.constants.SpeedConstants.EASY_SPEED
+import com.example.feedthesnake.constants.SpeedConstants.HARD_SPEED
+import com.example.feedthesnake.constants.SpeedConstants.NORMAL_SPEED
 import com.example.feedthesnake.model.SharedPreferencesHelper
 import com.example.feedthesnake.ui.components.CustomButton
 import com.example.feedthesnake.ui.components.CustomTopBar
@@ -87,7 +93,7 @@ fun NameEntryScreenContent(
             Image(
                 painter = painterResource(id = R.drawable.give_me_a_name),
                 contentDescription = stringResource(R.string.logo),
-                modifier = Modifier.size(SizeConstants.IMAGE_MIN_SIZE),
+                modifier = Modifier.size(IMAGE_MIN_SIZE),
 
                 )
             OutlinedTextField(
@@ -98,9 +104,9 @@ fun NameEntryScreenContent(
                 label = { Text(stringResource(R.string.name), color = DarkGrey) },
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(SizeConstants.MEDIUM_PADDING_SIZE, SizeConstants.MAX_PADDING_SIZE),
+                    .padding(MEDIUM_PADDING_SIZE, MAX_PADDING_SIZE),
                 singleLine = true,
-                shape = RoundedCornerShape(SizeConstants.MAX_CORNER_SHAPE_SIZE),
+                shape = RoundedCornerShape(MAX_CORNER_SHAPE_SIZE),
                 colors = colors(
                     focusedBorderColor = Green,
                     unfocusedBorderColor = DarkGreen,
@@ -114,15 +120,15 @@ fun NameEntryScreenContent(
             )
             Text(
                 text = stringResource(R.string.select_difficulty),
-                fontSize = SizeConstants.MEDIUM_FONT_SIZE,
+                fontSize = MEDIUM_FONT_SIZE,
                 fontWeight = FontWeight.Bold,
                 color = DarkGrey,
-                modifier = Modifier.padding(top = SizeConstants.MEDIUM_PADDING_SIZE)
+                modifier = Modifier.padding(top = MEDIUM_PADDING_SIZE)
             )
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(horizontal = SizeConstants.MAX_PADDING_SIZE, vertical = SizeConstants.SMALL_PADDING_SIZE),
+                    .padding(horizontal = MAX_PADDING_SIZE, vertical = SMALL_PADDING_SIZE),
                 horizontalArrangement = Arrangement.SpaceAround
             ) {
                 CustomRadioButton(
@@ -142,10 +148,10 @@ fun NameEntryScreenContent(
                 )
             }
             val speed = when (selectedDifficulty) {
-                easy -> SpeedConstants.EASY_SPEED
-                normal -> SpeedConstants.NORMAL_SPEED
-                hard -> SpeedConstants.HARD_SPEED
-                else -> SpeedConstants.NORMAL_SPEED
+                easy -> EASY_SPEED
+                normal -> NORMAL_SPEED
+                hard -> HARD_SPEED
+                else -> NORMAL_SPEED
             }
             SharedPreferencesHelper.saveDifficulty(context, speed)
             if (name.isNotEmpty()) {

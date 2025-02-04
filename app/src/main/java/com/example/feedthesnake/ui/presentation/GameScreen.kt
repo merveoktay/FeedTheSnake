@@ -42,16 +42,27 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.unit.dp
 import com.example.feedthesnake.R
-import com.example.feedthesnake.constants.SizeConstants
+import com.example.feedthesnake.constants.SizeConstants.BLOCK_SIZE
+import com.example.feedthesnake.constants.SizeConstants.BLOCK_SIZE_DIVIDER
+import com.example.feedthesnake.constants.SizeConstants.BORDER_SIZE
+import com.example.feedthesnake.constants.SizeConstants.COLUMN_SIZE
+import com.example.feedthesnake.constants.SizeConstants.ICON_SIZE
+import com.example.feedthesnake.constants.SizeConstants.MEDIUM_OFFSET_SIZE
+import com.example.feedthesnake.constants.SizeConstants.MEDIUM_PADDING_SIZE
+import com.example.feedthesnake.constants.SizeConstants.MIN_CORNER_SHAPE_SIZE
+import com.example.feedthesnake.constants.SizeConstants.MIN_FONT_SIZE
+import com.example.feedthesnake.constants.SizeConstants.MIN_OFFSET_SIZE
+import com.example.feedthesnake.constants.SizeConstants.MIN_PADDING_SIZE
+import com.example.feedthesnake.constants.SizeConstants.SMALL_PADDING_SIZE
+import com.example.feedthesnake.constants.SizeConstants.WEIGHT_SIZE
+import com.example.feedthesnake.constants.SizeConstants.WIDTH_SIZE
 import com.example.feedthesnake.model.SharedPreferencesHelper
 import com.example.feedthesnake.theme.DarkGreen
 import com.example.feedthesnake.theme.Green
@@ -94,15 +105,15 @@ fun GameScreenTopBar(score:Int,onNavigateToHome: () -> Unit) {
                     painter = painterResource(id = R.drawable.back_icon),
                     contentDescription = stringResource(R.string.back),
                     tint = Color.Unspecified,
-                    modifier = Modifier.size(SizeConstants.ICON_SIZE)
+                    modifier = Modifier.size(ICON_SIZE)
                 )
             }
             Spacer(modifier = Modifier.weight(1f))
             Box(
                 modifier = Modifier
-                    .padding(top = SizeConstants.MIN_PADDING_SIZE, bottom = SizeConstants.MIN_PADDING_SIZE, end = SizeConstants.MEDIUM_PADDING_SIZE)
-                    .background(color = Green, shape = RoundedCornerShape(SizeConstants.MIN_CORNER_SHAPE_SIZE))
-                    .padding(horizontal =SizeConstants.SMALL_PADDING_SIZE),
+                    .padding(top = MIN_PADDING_SIZE, bottom = MIN_PADDING_SIZE, end = MEDIUM_PADDING_SIZE)
+                    .background(color = Green, shape = RoundedCornerShape(MIN_CORNER_SHAPE_SIZE))
+                    .padding(horizontal =SMALL_PADDING_SIZE),
                 contentAlignment = Alignment.CenterEnd
             ) {
                 Column(
@@ -111,13 +122,13 @@ fun GameScreenTopBar(score:Int,onNavigateToHome: () -> Unit) {
                     Text(
                         text = stringResource(R.string.score),
                         color = Color.Black,
-                        fontSize = SizeConstants.MIN_FONT_SIZE,
+                        fontSize = MIN_FONT_SIZE,
                         fontWeight = FontWeight.Bold,
                     )
                     Text(
                         text = score.toString(),
                         color = Color.Black,
-                        fontSize = SizeConstants.MIN_FONT_SIZE,
+                        fontSize = MIN_FONT_SIZE,
                         fontWeight = FontWeight.Bold
                     )
                 }
@@ -153,7 +164,7 @@ fun GameScreenContent(
     val score by snakeViewModel.score
     val isGameOver by snakeViewModel.isGameOver.collectAsState()
 
-    val blockSize = with(LocalDensity.current) { SizeConstants.BLOCK_SIZE.toPx() }
+    val blockSize = with(LocalDensity.current) { BLOCK_SIZE.toPx() }
     var canvasSize by remember { mutableStateOf(Size.Zero) }
 
     LaunchedEffect(canvasSize) {
@@ -169,45 +180,41 @@ fun GameScreenContent(
 
     Column(
         modifier = modifier.fillMaxSize(),
-        verticalArrangement = Arrangement.SpaceBetween, // İçeriği dikey olarak yay
-        horizontalAlignment = Alignment.CenterHorizontally // İçeriği yatayda ortala
+        verticalArrangement = Arrangement.SpaceBetween,
+        horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Box(
             modifier = Modifier
-                .weight(1f) // Canvas'ın mümkün olduğunca büyük olmasını sağlar
+                .weight(WEIGHT_SIZE)
                 .fillMaxWidth()
-                .padding(SizeConstants.SMALL_PADDING_SIZE)
-                .border(SizeConstants.BORDER_SIZE, DarkGreen) // Kenarlık eklendi
+                .padding(SMALL_PADDING_SIZE)
+                .border(BORDER_SIZE, DarkGreen)
         ) {
             Canvas(
                 modifier = Modifier.matchParentSize()
             ) {
                 canvasSize = size
 
-                // Yılanı çiz
                 snakeBody.forEach { bodyPart ->
                     drawCircle(
                         color = DarkGreen,
-                        center = bodyPart + Offset(blockSize / 2, blockSize / 2),
-                        radius = blockSize / 2
+                        center = bodyPart + Offset(blockSize / BLOCK_SIZE_DIVIDER, blockSize / BLOCK_SIZE_DIVIDER),
+                        radius = blockSize / BLOCK_SIZE_DIVIDER
                     )
                 }
 
-                // Yemi çiz
                 drawCircle(
                     color = Orange,
-                    center = foodPosition + Offset(blockSize / 2, blockSize / 2),
-                    radius = blockSize / 2
+                    center = foodPosition + Offset(blockSize / BLOCK_SIZE_DIVIDER, blockSize / BLOCK_SIZE_DIVIDER),
+                    radius = blockSize / BLOCK_SIZE_DIVIDER
                 )
             }
         }
 
-        Spacer(modifier = Modifier.height(16.dp))
-
         ControlPanel(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(SizeConstants.SMALL_PADDING_SIZE),
+                .padding(SMALL_PADDING_SIZE),
             onDirectionChange = { direction ->
                 snakeViewModel.updateDirection(direction.x, direction.y)
             }
@@ -221,22 +228,22 @@ fun ControlPanel(onDirectionChange: (Offset) -> Unit, modifier: Modifier) {
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
         modifier = modifier
-            .size(150.dp)
-            .border(2.dp, DarkGreen, RoundedCornerShape(12.dp))
+            .size(COLUMN_SIZE)
+            .border(BORDER_SIZE, DarkGreen, RoundedCornerShape(MIN_CORNER_SHAPE_SIZE))
     ) {
-        IconButton(onClick = { onDirectionChange(Offset(0f, -1f)) }) {
+        IconButton(onClick = { onDirectionChange(Offset(MIN_OFFSET_SIZE, -MEDIUM_OFFSET_SIZE)) }) {
             Icon(Icons.Default.KeyboardArrowUp, contentDescription = "Up")
         }
         Row {
-            IconButton(onClick = { onDirectionChange(Offset(-1f, 0f)) }) {
+            IconButton(onClick = { onDirectionChange(Offset(-MEDIUM_OFFSET_SIZE, MIN_OFFSET_SIZE)) }) {
                 Icon(Icons.Default.KeyboardArrowLeft, contentDescription = "Left")
             }
-            Spacer(modifier = Modifier.width(24.dp))
-            IconButton(onClick = { onDirectionChange(Offset(1f, 0f)) }) {
+            Spacer(modifier = Modifier.width(WIDTH_SIZE))
+            IconButton(onClick = { onDirectionChange(Offset(MEDIUM_OFFSET_SIZE, MIN_OFFSET_SIZE)) }) {
                 Icon(Icons.Default.KeyboardArrowRight, contentDescription = "Right")
             }
         }
-        IconButton(onClick = { onDirectionChange(Offset(0f, 1f)) }) {
+        IconButton(onClick = { onDirectionChange(Offset(MIN_OFFSET_SIZE, MEDIUM_OFFSET_SIZE)) }) {
             Icon(Icons.Default.KeyboardArrowDown, contentDescription = "Down")
         }
     }
