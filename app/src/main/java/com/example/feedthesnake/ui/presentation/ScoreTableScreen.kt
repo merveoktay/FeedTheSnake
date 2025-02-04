@@ -23,6 +23,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
@@ -38,6 +39,7 @@ import kotlinx.coroutines.flow.StateFlow
 fun ScoreTableScreen(onNavigateToHome: () -> Unit,snakeViewModel:SnakeViewModel) {
     val snakes=snakeViewModel.topSnakes
     Scaffold(
+        modifier = Modifier.testTag("ScoreTableScreen"),
         containerColor = LightBlue,
         topBar = { ScoreTableScreenTopBar(onNavigateToHome) },
         content = { innerPadding -> ScoreTableScreenContent(modifier = Modifier.padding(innerPadding),snakes) }

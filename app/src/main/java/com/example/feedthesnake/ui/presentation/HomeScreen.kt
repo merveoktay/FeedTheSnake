@@ -15,6 +15,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import com.example.feedthesnake.R
@@ -24,7 +25,9 @@ import com.example.feedthesnake.ui.components.CustomButton
 @Composable
 fun HomeScreen(onNavigateToNameEntry: (String?) -> Unit, onNavigateToScoreTable: (String?) -> Unit) {
     val context= LocalContext.current
-    Scaffold(content = { innerPadding ->
+    Scaffold(
+        modifier = Modifier.testTag("HomeScreen"),
+        content = { innerPadding ->
         HomeScreenContent(context=context,
             modifier = Modifier.padding(innerPadding),
             onNavigateToNameEntry,

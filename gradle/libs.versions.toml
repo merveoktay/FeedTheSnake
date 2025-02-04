@@ -24,6 +24,7 @@ coreKtxVersion = "1.6.1"
 core = "1.47.0"
 mockkVersion="1.13.7"
 navigationTestingVersion="2.7.2"
+hiltTestVersion="2.50"
 
 [libraries]
 
@@ -60,6 +61,7 @@ core-ktx = { group = "androidx.test", name = "core-ktx", version.ref = "coreKtxV
 core = { group = "com.google.ar", name = "core", version.ref = "core" }
 mockk={group="io.mockk",name="mockk",version.ref="mockkVersion"}
 navigation_testing={group="androidx.navigation",name="navigation-testing",version.ref="navigationTestingVersion"}
+hilt_test={group="com.google.dagger",name="hilt-android-testing",version.ref="hiltTestVersion"}
 
 [plugins]
 compose-compiler = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }

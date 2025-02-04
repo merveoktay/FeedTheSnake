@@ -10,6 +10,7 @@ import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
 import com.example.feedthesnake.R
 import com.example.feedthesnake.constants.SizeConstants
@@ -34,7 +35,7 @@ fun CustomButton(
                 onNavigate(name)
             }
         },
-        modifier = modifier
+        modifier = modifier.testTag(text)
             .padding(
                 start = SizeConstants.MAX_PADDING_SIZE,
                 end = SizeConstants.MAX_PADDING_SIZE,

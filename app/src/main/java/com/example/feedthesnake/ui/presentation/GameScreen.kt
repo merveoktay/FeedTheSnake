@@ -5,14 +5,23 @@ import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.gestures.detectDragGestures
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.KeyboardArrowDown
+import androidx.compose.material.icons.filled.KeyboardArrowLeft
+import androidx.compose.material.icons.filled.KeyboardArrowRight
+import androidx.compose.material.icons.filled.KeyboardArrowUp
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -22,6 +31,7 @@ import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
@@ -35,9 +45,11 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalDensity
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.unit.dp
 import com.example.feedthesnake.R
 import com.example.feedthesnake.constants.SizeConstants
 import com.example.feedthesnake.model.SharedPreferencesHelper
@@ -47,7 +59,6 @@ import com.example.feedthesnake.theme.LightBlue
 import com.example.feedthesnake.theme.Orange
 import com.example.feedthesnake.viewModel.SnakeViewModel
 import kotlinx.coroutines.delay
-import kotlin.math.abs
 import kotlin.random.Random
 
 @Composable
@@ -62,6 +73,7 @@ fun GameScreen(
         mutableIntStateOf(0)
     }
     Scaffold(
+        modifier = Modifier.testTag("GameScreen"),
         containerColor = LightBlue,
         topBar = { GameScreenTopBar(score,onNavigateToHome) },
         content = { innerPadding -> GameScreenContent(context=context,name=name,snakeViewModel=snakeViewModel,modifier = Modifier.padding(innerPadding), onScoreChange = { newScore ->
@@ -135,92 +147,98 @@ fun GameScreenContent(
     onNavigateToGameOver: (Int) -> Unit,
     context: Context
 ) {
-    var snakeBody by remember { mutableStateOf(listOf(Offset(SizeConstants.MAX_OFFSET_SIZE, SizeConstants.MAX_OFFSET_SIZE))) }
-    var foodPosition by remember { mutableStateOf(Offset.Zero) }
-    var snakeDirection by remember { mutableStateOf(Offset(SizeConstants.MEDIUM_OFFSET_SIZE, SizeConstants.MIN_OFFSET_SIZE)) }
+    val snakeBody by snakeViewModel.snakeBody.collectAsState()
+    val foodPosition by snakeViewModel.foodPosition.collectAsState()
+    val snakeDirection by snakeViewModel.snakeDirection.collectAsState()
+    val score by snakeViewModel.score
+    val isGameOver by snakeViewModel.isGameOver.collectAsState()
+
     val blockSize = with(LocalDensity.current) { SizeConstants.BLOCK_SIZE.toPx() }
-    var score by remember { mutableIntStateOf(0) }
     var canvasSize by remember { mutableStateOf(Size.Zero) }
-    var isGameOver by remember { mutableStateOf(false) } // Game Over bayrağı
 
     LaunchedEffect(canvasSize) {
-        foodPosition = randomOffset(canvasSize.width, canvasSize.height, blockSize)
+        snakeViewModel.initializeFood(canvasSize.width, canvasSize.height, blockSize)
     }
 
-    LaunchedEffect(key1 = canvasSize) {
+    LaunchedEffect(canvasSize) {
         while (!isGameOver) {
-            delay(SharedPreferencesHelper.getDifficulty(context =context))
-
-            val newHead = snakeBody.first().copy(
-                x = snakeBody.first().x + blockSize * snakeDirection.x,
-                y = snakeBody.first().y + blockSize * snakeDirection.y
-            )
-
-            // Canvas sınır kontrolü (duvara çarpma)
-            if (newHead.x < 0 || newHead.x + blockSize > canvasSize.width ||
-                newHead.y < 0 || newHead.y + blockSize > canvasSize.height
-            ) {
-                isGameOver = true
-                snakeViewModel.saveSnake(name,score)
-                onNavigateToGameOver(score)
-                return@LaunchedEffect
-            }
-
-            // Kendine çarpma kontrolü
-            if (snakeBody.drop(SizeConstants.DROP_SIZE).contains(newHead)) {
-                isGameOver = true
-                snakeViewModel.saveSnake(name,score)
-                onNavigateToGameOver(score)
-                return@LaunchedEffect
-            }
-
-            // Yılanın pozisyonunu güncelle
-            snakeBody = listOf(newHead) + snakeBody.dropLast(1)
-
-            // Yem yeme kontrolü
-            val headCenter = newHead + Offset(blockSize / SizeConstants.BLOCK_SIZE_DIVIDER, blockSize / SizeConstants.BLOCK_SIZE_DIVIDER)
-            val foodCenter = foodPosition + Offset(blockSize / SizeConstants.BLOCK_SIZE_DIVIDER, blockSize / SizeConstants.BLOCK_SIZE_DIVIDER)
-            if ((headCenter - foodCenter).getDistance() < blockSize) {
-                snakeBody = listOf(newHead) + snakeBody
-                foodPosition = randomOffset(canvasSize.width, canvasSize.height, blockSize)
-                score +=SizeConstants.SCORE
-                onScoreChange(score)
-            }
+            delay(SharedPreferencesHelper.getDifficulty(context = context))
+            snakeViewModel.moveSnake(blockSize, canvasSize, name, onNavigateToGameOver)
         }
     }
 
-    Canvas(
-        modifier = modifier
-            .fillMaxSize()
-            .padding(SizeConstants.SMALL_PADDING_SIZE)
-            .border(SizeConstants.BORDER_SIZE, DarkGreen)
-            .pointerInput(Unit) {
-                detectDragGestures { _, dragAmount ->
-                    val (dragX, dragY) = dragAmount
-                    snakeDirection = when {
-                        abs(dragX) > abs(dragY) -> if (dragX > 0) Offset(SizeConstants.MEDIUM_OFFSET_SIZE, SizeConstants.MIN_OFFSET_SIZE) else Offset(-SizeConstants.MEDIUM_OFFSET_SIZE, SizeConstants.MIN_OFFSET_SIZE)
-                        else -> if (dragY > 0) Offset(SizeConstants.MIN_OFFSET_SIZE, SizeConstants.MEDIUM_OFFSET_SIZE) else Offset(SizeConstants.MIN_OFFSET_SIZE, -SizeConstants.MEDIUM_OFFSET_SIZE)
-                    }
-
-                }
-            }
+    Column(
+        modifier = modifier.fillMaxSize(),
+        verticalArrangement = Arrangement.SpaceBetween, // İçeriği dikey olarak yay
+        horizontalAlignment = Alignment.CenterHorizontally // İçeriği yatayda ortala
     ) {
-        canvasSize = size
+        Box(
+            modifier = Modifier
+                .weight(1f) // Canvas'ın mümkün olduğunca büyük olmasını sağlar
+                .fillMaxWidth()
+                .padding(SizeConstants.SMALL_PADDING_SIZE)
+                .border(SizeConstants.BORDER_SIZE, DarkGreen) // Kenarlık eklendi
+        ) {
+            Canvas(
+                modifier = Modifier.matchParentSize()
+            ) {
+                canvasSize = size
 
-        snakeBody.forEach { bodyPart ->
-            drawCircle(
-                color = DarkGreen,
-                center = bodyPart + Offset(blockSize / SizeConstants.BLOCK_SIZE_DIVIDER, blockSize / SizeConstants.BLOCK_SIZE_DIVIDER),
-                radius = blockSize / SizeConstants.BLOCK_SIZE_DIVIDER
-            )
+                // Yılanı çiz
+                snakeBody.forEach { bodyPart ->
+                    drawCircle(
+                        color = DarkGreen,
+                        center = bodyPart + Offset(blockSize / 2, blockSize / 2),
+                        radius = blockSize / 2
+                    )
+                }
+
+                // Yemi çiz
+                drawCircle(
+                    color = Orange,
+                    center = foodPosition + Offset(blockSize / 2, blockSize / 2),
+                    radius = blockSize / 2
+                )
+            }
         }
 
-        drawCircle(
-            color = Orange,
-            center = foodPosition + Offset(blockSize / SizeConstants.BLOCK_SIZE_DIVIDER, blockSize / SizeConstants.BLOCK_SIZE_DIVIDER),
-            radius = blockSize / SizeConstants.BLOCK_SIZE_DIVIDER
+        Spacer(modifier = Modifier.height(16.dp))
+
+        ControlPanel(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(SizeConstants.SMALL_PADDING_SIZE),
+            onDirectionChange = { direction ->
+                snakeViewModel.updateDirection(direction.x, direction.y)
+            }
         )
     }
 }
 
+
+@Composable
+fun ControlPanel(onDirectionChange: (Offset) -> Unit, modifier: Modifier) {
+    Column(
+        horizontalAlignment = Alignment.CenterHorizontally,
+        modifier = modifier
+            .size(150.dp)
+            .border(2.dp, DarkGreen, RoundedCornerShape(12.dp))
+    ) {
+        IconButton(onClick = { onDirectionChange(Offset(0f, -1f)) }) {
+            Icon(Icons.Default.KeyboardArrowUp, contentDescription = "Up")
+        }
+        Row {
+            IconButton(onClick = { onDirectionChange(Offset(-1f, 0f)) }) {
+                Icon(Icons.Default.KeyboardArrowLeft, contentDescription = "Left")
+            }
+            Spacer(modifier = Modifier.width(24.dp))
+            IconButton(onClick = { onDirectionChange(Offset(1f, 0f)) }) {
+                Icon(Icons.Default.KeyboardArrowRight, contentDescription = "Right")
+            }
+        }
+        IconButton(onClick = { onDirectionChange(Offset(0f, 1f)) }) {
+            Icon(Icons.Default.KeyboardArrowDown, contentDescription = "Down")
+        }
+    }
+}
 

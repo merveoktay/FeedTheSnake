@@ -21,6 +21,7 @@ import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import com.example.feedthesnake.R
@@ -51,7 +52,7 @@ fun SecondSplashScreen(onNavigateToHome: () -> Unit) {
 
     Box(
         modifier = Modifier
-            .fillMaxSize()
+            .fillMaxSize().testTag("SecondSplashScreen")
             .background( Brush.linearGradient(
                 colors = listOf(animatedColor1.value, animatedColor2.value),
                 start = Offset(animatedOffsetX.value, SizeConstants.MIN_ANIMATED_OFFSET),

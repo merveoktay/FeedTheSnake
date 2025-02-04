@@ -14,6 +14,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import com.example.feedthesnake.R
@@ -27,7 +28,7 @@ import com.example.feedthesnake.theme.customFontFamily
 @Composable
 fun GameOverScreen(score: Int,onNavigateToHome: () -> Unit,onNavigateToNameEntry: (String?) -> Unit) {
     val context = LocalContext.current
-    Scaffold(
+    Scaffold(modifier = Modifier.testTag("GameOverScreen"),
         containerColor = LightBlue,
         topBar = { CustomTopBar(onNavigateToHome) },
         content = { innerPadding ->

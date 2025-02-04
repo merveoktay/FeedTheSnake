@@ -13,13 +13,19 @@
         </DropdownSelection>
         <DialogSelection />
       </SelectionState>
-      <SelectionState runConfigName="SnakeDaoTest (1)">
+      <SelectionState runConfigName="testNavigation_fromSecondSplash_toHome() (1)">
         <option name="selectionMode" value="DROPDOWN" />
       </SelectionState>
-      <SelectionState runConfigName="AppNavHostTest">
+      <SelectionState runConfigName="testNavigation_fromHome_toNameEntry()">
         <option name="selectionMode" value="DROPDOWN" />
       </SelectionState>
-      <SelectionState runConfigName="NavigationTest">
+      <SelectionState runConfigName="testNavigation_fromGameOver_toScoreTable()">
+        <option name="selectionMode" value="DROPDOWN" />
+      </SelectionState>
+      <SelectionState runConfigName="testNavigation_fromNameEntry_toGame()">
+        <option name="selectionMode" value="DROPDOWN" />
+      </SelectionState>
+      <SelectionState runConfigName="appNavHost_verifyStartDestination()">
         <option name="selectionMode" value="DROPDOWN" />
       </SelectionState>
     </selectionStates>

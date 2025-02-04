@@ -27,6 +27,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
@@ -45,7 +46,7 @@ import com.example.feedthesnake.ui.components.CustomRadioButton
 @Composable
 fun NameEntryScreen(onNavigateToHome: () -> Unit, onNavigateToGame: (String) -> Unit) {
     val context = LocalContext.current
-    Scaffold(
+    Scaffold(modifier = Modifier.testTag("NameEntryScreen"),
         containerColor = LightBlue,
         topBar = { CustomTopBar(onNavigateToHome) },
         content = { innerPadding ->
