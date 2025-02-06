@@ -6,7 +6,7 @@ import androidx.compose.material3.RadioButtonDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
-import com.example.feedthesnake.constants.SizeConstants
+import com.example.feedthesnake.constants.SizeConstants.MIN_FONT_SIZE
 import com.example.feedthesnake.theme.DarkGreen
 import com.example.feedthesnake.theme.DarkGrey
 import com.example.feedthesnake.theme.Green
@@ -24,7 +24,7 @@ fun CustomRadioButton(label: String, selected: Boolean, onClick: () -> Unit) {
         )
         Text(
             text = label,
-            fontSize = SizeConstants.MIN_FONT_SIZE,
+            fontSize = MIN_FONT_SIZE,
             color = DarkGrey
         )
     }

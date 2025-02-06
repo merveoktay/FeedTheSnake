@@ -28,14 +28,11 @@ class SnakeRepositoryTest {
 
     @Test
     fun `getTopSnakes returns list of snakes`() = runTest {
-        // Mock behavior
         val mockSnakes = listOf(Snake(1,"Alice", 100), Snake(2,"Bob", 80))
         `when`(snakeDao.getTopSnakes()).thenReturn(mockSnakes)
 
-        // Call method
         val result = repository.getTopSnakes()
 
-        // Verify results
         assertEquals(mockSnakes, result)
         verify(snakeDao).getTopSnakes()
     }
@@ -43,11 +40,7 @@ class SnakeRepositoryTest {
     @Test
     fun `insertSnake calls snakeDao insert method`() = runTest {
         val newSnake = Snake(0,"Charlie", 90)
-
-        // Call method
         repository.insertSnake(newSnake)
-
-        // Verify interaction
         verify(snakeDao).insertSnake(newSnake)
     }
 }

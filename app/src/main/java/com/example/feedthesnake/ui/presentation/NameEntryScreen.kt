@@ -104,7 +104,7 @@ fun NameEntryScreenContent(
                 label = { Text(stringResource(R.string.name), color = DarkGrey) },
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(MEDIUM_PADDING_SIZE, MAX_PADDING_SIZE),
+                    .padding(MEDIUM_PADDING_SIZE),
                 singleLine = true,
                 shape = RoundedCornerShape(MAX_CORNER_SHAPE_SIZE),
                 colors = colors(
@@ -128,7 +128,7 @@ fun NameEntryScreenContent(
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(horizontal = MAX_PADDING_SIZE, vertical = SMALL_PADDING_SIZE),
+                    .padding(horizontal = MAX_PADDING_SIZE),
                 horizontalArrangement = Arrangement.SpaceAround
             ) {
                 CustomRadioButton(

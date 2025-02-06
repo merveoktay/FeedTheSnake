@@ -14,7 +14,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import com.example.feedthesnake.R
-import com.example.feedthesnake.constants.SizeConstants
+import com.example.feedthesnake.constants.SizeConstants.ICON_SIZE
 import com.example.feedthesnake.theme.LightBlue
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -30,7 +30,7 @@ fun CustomTopBar(onNavigate: () -> Unit) {
                         painter = painterResource(id = R.drawable.back_icon),
                         contentDescription = stringResource(R.string.back),
                         tint = Color.Unspecified,
-                        modifier = Modifier.size(SizeConstants.ICON_SIZE)
+                        modifier = Modifier.size(ICON_SIZE)
                     )
                 }
             }

@@ -8,6 +8,7 @@ object SizeConstants {
     const val MAX_ANIMATED_OFFSET=1000f
     const val MIN_ANIMATED_OFFSET=0f
     val ICON_SIZE = 35.dp
+    val MAX_ICON_SIZE=48.dp
 
     val IMAGE_MAX_SIZE = 300.dp
     val IMAGE_MIN_SIZE = 200.dp
@@ -19,6 +20,7 @@ object SizeConstants {
 
     val COLUMN_SIZE=150.dp
     val WIDTH_SIZE=24.dp
+val MAX_WIDTH_SIZE=42.dp
 
     val MAX_CORNER_SHAPE_SIZE = 50.dp
     val MIN_CORNER_SHAPE_SIZE = 16.dp

@@ -28,8 +28,8 @@ class SnakeViewModel @Inject constructor(private val repository: SnakeRepository
     private val _topSnakes = MutableStateFlow<List<Snake>>(emptyList())
     val topSnakes: StateFlow<List<Snake>> get() = _topSnakes
 
-    private val _score = mutableIntStateOf(0)
-    val score: State<Int> = _score
+    private val _score = MutableStateFlow(0)
+    val score: StateFlow<Int> = _score
 
     private val _snakeBody = MutableStateFlow(listOf(Offset(MAX_OFFSET_SIZE, MAX_OFFSET_SIZE)))
     val snakeBody: StateFlow<List<Offset>> get() = _snakeBody
@@ -58,6 +58,10 @@ class SnakeViewModel @Inject constructor(private val repository: SnakeRepository
         }
     }
 
+    fun updateScore(newScore: Int) {
+        _score.value = newScore
+    }
+
     fun saveSnake(name: String, score: Int) {
         viewModelScope.launch {
             val snake = Snake(name = name, score = score)
@@ -80,8 +84,8 @@ class SnakeViewModel @Inject constructor(private val repository: SnakeRepository
             _snakeBody.value.drop(DROP_SIZE).contains(newHead)
         ) {
             _isGameOver.value = true
-            saveSnake(name, _score.intValue)
-            onGameOver(_score.intValue)
+            saveSnake(name, _score.value)
+            onGameOver(_score.value)
             return
         }
 

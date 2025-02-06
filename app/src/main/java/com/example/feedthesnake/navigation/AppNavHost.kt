@@ -1,8 +1,5 @@
 package com.example.feedthesnake.navigation
 
-import androidx.compose.animation.core.tween
-import androidx.compose.animation.slideInHorizontally
-import androidx.compose.animation.slideOutHorizontally
 import androidx.compose.runtime.Composable
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.compose.NavHost
@@ -25,23 +22,15 @@ fun AppNavHost() {
         navController = navController,
         startDestination = "splash"
     ) {
-        composable("splash", enterTransition = {
-            slideInHorizontally( initialOffsetX = { fullWidth -> fullWidth },
-                animationSpec = tween(durationMillis = 600))
-        },
-            exitTransition = { slideOutHorizontally() }) {
+        composable("splash") {
             SplashScreen(onNavigateToSecondSplash = { navController.navigate("second_splash") }
             )
         }
-        composable("second_splash", enterTransition = { slideInHorizontally( initialOffsetX = { fullWidth -> fullWidth },
-            animationSpec = tween(durationMillis = 600)) },
-            exitTransition = { slideOutHorizontally() }) {
+        composable("second_splash") {
             SecondSplashScreen(onNavigateToHome = { navController.navigate("home") }
             )
         }
-        composable("home", enterTransition = { slideInHorizontally( initialOffsetX = { fullWidth -> fullWidth },
-            animationSpec = tween(durationMillis = 600)) },
-            exitTransition = { slideOutHorizontally() }) {
+        composable("home") {
             HomeScreen(onNavigateToNameEntry = {
                 navController.navigate("name_entry")
             }, onNavigateToScoreTable = {
@@ -51,9 +40,7 @@ fun AppNavHost() {
 
             })
         }
-        composable("name_entry", enterTransition = { slideInHorizontally( initialOffsetX = { fullWidth -> fullWidth },
-            animationSpec = tween(durationMillis = 600)) },
-            exitTransition = { slideOutHorizontally() }) {
+        composable("name_entry") {
             NameEntryScreen(
                 onNavigateToHome = { navController.navigate("home") },
                 onNavigateToGame = { name ->
@@ -62,9 +49,7 @@ fun AppNavHost() {
             )
         }
 
-        composable("game/{name}", enterTransition = { slideInHorizontally( initialOffsetX = { fullWidth -> fullWidth },
-            animationSpec = tween(durationMillis = 600)) },
-            exitTransition = { slideOutHorizontally() }) { backStackEntry ->
+        composable("game/{name}") { backStackEntry ->
             val snakeViewModel: SnakeViewModel = hiltViewModel()
             val name = backStackEntry.arguments?.getString("name")
 
@@ -80,9 +65,7 @@ fun AppNavHost() {
             }
         }
 
-        composable("game_over/{score}", enterTransition = { slideInHorizontally( initialOffsetX = { fullWidth -> fullWidth },
-            animationSpec = tween(durationMillis = 600)) },
-            exitTransition = { slideOutHorizontally() }) { backStackEntry ->
+        composable("game_over/{score}") { backStackEntry ->
             val score = backStackEntry.arguments?.getString("score")?.toIntOrNull() ?: 0
             GameOverScreen(score = score, onNavigateToHome = { navController.navigate("home") },
                 onNavigateToNameEntry = {
@@ -90,13 +73,13 @@ fun AppNavHost() {
                 }
             )
         }
-        composable("score_table", enterTransition = { slideInHorizontally( initialOffsetX = { fullWidth -> fullWidth },
-            animationSpec = tween(durationMillis = 600)) },
-            exitTransition = { slideOutHorizontally() }) {
+        composable("score_table") {
+
             val snakeViewModel: SnakeViewModel = hiltViewModel()
             ScoreTableScreen(
                 onNavigateToHome = { navController.navigate("home") }, snakeViewModel
             )
+
         }
     }
 }

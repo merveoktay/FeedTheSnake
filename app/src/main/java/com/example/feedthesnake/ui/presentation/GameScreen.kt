@@ -4,7 +4,6 @@ import android.content.Context
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
-import androidx.compose.foundation.gestures.detectDragGestures
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -12,16 +11,10 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.KeyboardArrowDown
-import androidx.compose.material.icons.filled.KeyboardArrowLeft
-import androidx.compose.material.icons.filled.KeyboardArrowRight
-import androidx.compose.material.icons.filled.KeyboardArrowUp
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -33,7 +26,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
@@ -54,6 +46,8 @@ import com.example.feedthesnake.constants.SizeConstants.BLOCK_SIZE_DIVIDER
 import com.example.feedthesnake.constants.SizeConstants.BORDER_SIZE
 import com.example.feedthesnake.constants.SizeConstants.COLUMN_SIZE
 import com.example.feedthesnake.constants.SizeConstants.ICON_SIZE
+import com.example.feedthesnake.constants.SizeConstants.MAX_ICON_SIZE
+import com.example.feedthesnake.constants.SizeConstants.MAX_WIDTH_SIZE
 import com.example.feedthesnake.constants.SizeConstants.MEDIUM_OFFSET_SIZE
 import com.example.feedthesnake.constants.SizeConstants.MEDIUM_PADDING_SIZE
 import com.example.feedthesnake.constants.SizeConstants.MIN_CORNER_SHAPE_SIZE
@@ -70,7 +64,6 @@ import com.example.feedthesnake.theme.LightBlue
 import com.example.feedthesnake.theme.Orange
 import com.example.feedthesnake.viewModel.SnakeViewModel
 import kotlinx.coroutines.delay
-import kotlin.random.Random
 
 @Composable
 fun GameScreen(
@@ -80,15 +73,17 @@ fun GameScreen(
     snakeViewModel: SnakeViewModel
 ) {
     val context = LocalContext.current
-    var score by remember {
-        mutableIntStateOf(0)
-    }
+    val score by snakeViewModel.score.collectAsState()
     Scaffold(
         modifier = Modifier.testTag("GameScreen"),
         containerColor = LightBlue,
         topBar = { GameScreenTopBar(score,onNavigateToHome) },
-        content = { innerPadding -> GameScreenContent(context=context,name=name,snakeViewModel=snakeViewModel,modifier = Modifier.padding(innerPadding), onScoreChange = { newScore ->
-            score = newScore },
+        content = { innerPadding -> GameScreenContent(
+            context = context,
+            name = name,
+            snakeViewModel = snakeViewModel,
+            modifier = Modifier.padding(innerPadding),
+            onScoreChange = { newScore -> snakeViewModel.updateScore(newScore) },
             onNavigateToGameOver = onNavigateToGameOver
         ) })
 }
@@ -140,15 +135,6 @@ fun GameScreenTopBar(score:Int,onNavigateToHome: () -> Unit) {
     })
 }
 
-fun randomOffset(canvasWidth: Float, canvasHeight: Float, blockSize: Float): Offset {
-    val random = Random.Default
-    return Offset(
-        x = random.nextInt(from = 0, until = (canvasWidth / blockSize).toInt()) * blockSize,
-        y = random.nextInt(from = 0, until = (canvasHeight / blockSize).toInt()) * blockSize
-    )
-}
-
-
 @Composable
 fun GameScreenContent(
     name: String,
@@ -161,7 +147,7 @@ fun GameScreenContent(
     val snakeBody by snakeViewModel.snakeBody.collectAsState()
     val foodPosition by snakeViewModel.foodPosition.collectAsState()
     val snakeDirection by snakeViewModel.snakeDirection.collectAsState()
-    val score by snakeViewModel.score
+    val score by snakeViewModel.score.collectAsState()
     val isGameOver by snakeViewModel.isGameOver.collectAsState()
 
     val blockSize = with(LocalDensity.current) { BLOCK_SIZE.toPx() }
@@ -217,35 +203,71 @@ fun GameScreenContent(
                 .padding(SMALL_PADDING_SIZE),
             onDirectionChange = { direction ->
                 snakeViewModel.updateDirection(direction.x, direction.y)
-            }
+            },
+            snakeDirection = snakeDirection
         )
     }
 }
 
 
 @Composable
-fun ControlPanel(onDirectionChange: (Offset) -> Unit, modifier: Modifier) {
+fun ControlPanel(
+    onDirectionChange: (Offset) -> Unit,
+    modifier: Modifier,
+    snakeDirection: Offset
+) {
+    val up = Offset(MIN_OFFSET_SIZE, -MEDIUM_OFFSET_SIZE)
+    val down = Offset(MIN_OFFSET_SIZE, MEDIUM_OFFSET_SIZE)
+    val left = Offset(-MEDIUM_OFFSET_SIZE, MIN_OFFSET_SIZE)
+    val right = Offset(MEDIUM_OFFSET_SIZE, MIN_OFFSET_SIZE)
+
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
         modifier = modifier
             .size(COLUMN_SIZE)
-            .border(BORDER_SIZE, DarkGreen, RoundedCornerShape(MIN_CORNER_SHAPE_SIZE))
+
     ) {
-        IconButton(onClick = { onDirectionChange(Offset(MIN_OFFSET_SIZE, -MEDIUM_OFFSET_SIZE)) }) {
-            Icon(Icons.Default.KeyboardArrowUp, contentDescription = "Up")
+        IconButton(
+            onClick = {
+                if (snakeDirection != down) {
+                    onDirectionChange(up)
+                }
+            }
+        ) {
+            Icon(modifier = Modifier.size(MAX_ICON_SIZE), tint = Color.Unspecified, painter = painterResource(R.drawable.up_arrow), contentDescription = "Up")
         }
         Row {
-            IconButton(onClick = { onDirectionChange(Offset(-MEDIUM_OFFSET_SIZE, MIN_OFFSET_SIZE)) }) {
-                Icon(Icons.Default.KeyboardArrowLeft, contentDescription = "Left")
+            IconButton(
+                onClick = {
+                    if (snakeDirection != right) {
+                        onDirectionChange(left)
+                    }
+                }
+            ) {
+                Icon(modifier = Modifier.size(MAX_ICON_SIZE), tint = Color.Unspecified, painter = painterResource(R.drawable.left_arrow), contentDescription = "Left")
             }
-            Spacer(modifier = Modifier.width(WIDTH_SIZE))
-            IconButton(onClick = { onDirectionChange(Offset(MEDIUM_OFFSET_SIZE, MIN_OFFSET_SIZE)) }) {
-                Icon(Icons.Default.KeyboardArrowRight, contentDescription = "Right")
+            Spacer(modifier = Modifier.width(MAX_WIDTH_SIZE))
+            IconButton(
+                onClick = {
+                    if (snakeDirection != left) {
+                        onDirectionChange(right)
+                    }
+                }
+            ) {
+                Icon(modifier = Modifier.size(MAX_ICON_SIZE), tint = Color.Unspecified, painter = painterResource(R.drawable.right_arrow), contentDescription = "Right")
             }
         }
-        IconButton(onClick = { onDirectionChange(Offset(MIN_OFFSET_SIZE, MEDIUM_OFFSET_SIZE)) }) {
-            Icon(Icons.Default.KeyboardArrowDown, contentDescription = "Down")
+        IconButton(
+            onClick = {
+                if (snakeDirection != up) {
+                    onDirectionChange(down)
+                }
+            }
+        ) {
+            Icon(modifier = Modifier.size(MAX_ICON_SIZE), tint = Color.Unspecified, painter = painterResource(R.drawable.down_arrow), contentDescription = "Down")
         }
     }
 }
+
+
 
