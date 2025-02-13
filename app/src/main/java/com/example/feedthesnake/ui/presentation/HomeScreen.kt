@@ -9,32 +9,48 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.wrapContentHeight
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import com.example.feedthesnake.R
+import com.example.feedthesnake.constants.SizeConstants.ICON_SIZE
 import com.example.feedthesnake.constants.SizeConstants.IMAGE_MAX_SIZE
+import com.example.feedthesnake.constants.SizeConstants.MEDIUM_PADDING_SIZE
 import com.example.feedthesnake.ui.components.CustomButton
+import com.example.feedthesnake.util.MusicManager
 
 @Composable
-fun HomeScreen(onNavigateToNameEntry: (String?) -> Unit, onNavigateToScoreTable: (String?) -> Unit) {
-    val context= LocalContext.current
+fun HomeScreen(
+    onNavigateToNameEntry: (String?) -> Unit,
+    onNavigateToScoreTable: (String?) -> Unit,
+) {
+    val context = LocalContext.current
     Scaffold(
         modifier = Modifier.testTag("HomeScreen"),
         content = { innerPadding ->
-        HomeScreenContent(context=context,
-            modifier = Modifier.padding(innerPadding),
-            onNavigateToNameEntry,
-            onNavigateToScoreTable
-        )
+            HomeScreenContent(
+                context = context,
+                modifier = Modifier.padding(innerPadding),
+                onNavigateToNameEntry,
+                onNavigateToScoreTable
+            )
 
-    })
+        })
 }
 
 @Composable
@@ -44,7 +60,8 @@ fun HomeScreenContent(
     onNavigateToNameEntry: (String?) -> Unit,
     onNavigateToScoreTable: (String?) -> Unit,
 
-) {
+    ) {
+    var sound by remember { mutableStateOf(true) }
     Box(modifier = modifier.fillMaxSize()) {
         Image(
             painter = painterResource(id = R.drawable.login_background),
@@ -68,18 +85,43 @@ fun HomeScreenContent(
             CustomButton(
                 text = stringResource(R.string.new_game),
                 onNavigate = onNavigateToNameEntry,
-                context =context
+                context = context
             )
             CustomButton(
                 text = stringResource(R.string.high_score),
-                onNavigate =onNavigateToScoreTable,
-                context =context
+                onNavigate = onNavigateToScoreTable,
+                context = context
             )
             CustomButton(
                 text = stringResource(R.string.exit),
                 onNavigate = { },
-                context =context
+                context = context
             )
+        }
+        IconButton(
+            onClick = { sound=!sound
+                if (sound) MusicManager.playMusic(context, R.raw.game_music, true)
+                    else  MusicManager.stopMusic()
+                },
+            modifier = modifier
+                .align(Alignment.BottomStart)
+                .padding(MEDIUM_PADDING_SIZE) // İkonun ekran kenarına çok yakın olmaması için padding ekleyelim
+        ) {
+            if(sound){
+            Icon(
+                painter = painterResource(R.drawable.sound_off_icon),
+                contentDescription = stringResource(R.string.sound_off),
+                tint = Color.Unspecified,
+                modifier = modifier.size(ICON_SIZE)
+            )}
+            else {
+                Icon(
+                    painter = painterResource(R.drawable.sound_on_icon),
+                    contentDescription = stringResource(R.string.sound_off),
+                    tint = Color.Unspecified,
+                    modifier = modifier.size(ICON_SIZE)
+                )
+            }
         }
     }
 }

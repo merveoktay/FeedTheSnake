@@ -19,6 +19,7 @@ import com.example.feedthesnake.constants.SizeConstants.MAX_PADDING_SIZE
 import com.example.feedthesnake.constants.SizeConstants.SMALL_PADDING_SIZE
 import com.example.feedthesnake.theme.DarkGreen
 import com.example.feedthesnake.theme.Green
+import kotlin.system.exitProcess
 
 
 @Composable
@@ -33,7 +34,8 @@ fun CustomButton(
     Button(
         onClick = {
             if (text == buttonText) {
-                (context as Activity).finishAffinity()
+                (context as? Activity)?.finish()
+                exitProcess(0)
             } else {
                 onNavigate(name)
             }
