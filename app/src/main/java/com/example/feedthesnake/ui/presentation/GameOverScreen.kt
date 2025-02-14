@@ -10,6 +10,7 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
@@ -26,23 +27,36 @@ import com.example.feedthesnake.ui.components.CustomTopBar
 import com.example.feedthesnake.theme.DarkGrey
 import com.example.feedthesnake.theme.LightBlue
 import com.example.feedthesnake.theme.customFontFamily
+import com.example.feedthesnake.util.MusicManager
 
 @Composable
-fun GameOverScreen(score: Int,onNavigateToHome: () -> Unit,onNavigateToNameEntry: (String?) -> Unit) {
+fun GameOverScreen(
+    score: Int,
+    onNavigateToHome: () -> Unit,
+    onNavigateToNameEntry: (String?) -> Unit,
+) {
     val context = LocalContext.current
+
+    LaunchedEffect(Unit) {
+        if (MusicManager.isMusicPlay) {
+            MusicManager.stopMusic()
+            MusicManager.playMusic(context, R.raw.gameover_music, false)
+            MusicManager.stopMusic()
+            MusicManager.playMusic(context, R.raw.game_music)
+        }
+    }
     Scaffold(modifier = Modifier.testTag("GameOverScreen"),
         containerColor = LightBlue,
         topBar = { CustomTopBar(onNavigateToHome) },
         content = { innerPadding ->
             GameOverScreenContent(
                 modifier = Modifier.padding(innerPadding),
-                score = score,onNavigateToNameEntry,
-                context=context
+                score = score, onNavigateToNameEntry,
+                context = context
             )
         }
     )
 }
-
 
 
 @Composable
@@ -50,7 +64,7 @@ fun GameOverScreenContent(
     modifier: Modifier,
     score: Int,
     onNavigateToNameEntry: (String?) -> Unit,
-    context: Context
+    context: Context,
 ) {
     Box(modifier = modifier.fillMaxSize()) {
         Image(
@@ -70,7 +84,7 @@ fun GameOverScreenContent(
                 contentDescription = stringResource(R.string.logo),
                 modifier = Modifier.size(IMAGE_MAX_SIZE),
 
-            )
+                )
             Text(
                 text = stringResource(R.string.your_score, score),
                 color = DarkGrey,
@@ -80,7 +94,7 @@ fun GameOverScreenContent(
             )
             CustomButton(
                 text = stringResource(R.string.try_again),
-                onNavigate =onNavigateToNameEntry ,
+                onNavigate = onNavigateToNameEntry,
                 context = context
             )
         }

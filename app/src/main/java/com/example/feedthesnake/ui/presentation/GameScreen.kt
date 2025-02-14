@@ -56,7 +56,6 @@ import com.example.feedthesnake.constants.SizeConstants.MIN_OFFSET_SIZE
 import com.example.feedthesnake.constants.SizeConstants.MIN_PADDING_SIZE
 import com.example.feedthesnake.constants.SizeConstants.SMALL_PADDING_SIZE
 import com.example.feedthesnake.constants.SizeConstants.WEIGHT_SIZE
-import com.example.feedthesnake.constants.SizeConstants.WIDTH_SIZE
 import com.example.feedthesnake.model.SharedPreferencesHelper
 import com.example.feedthesnake.theme.DarkGreen
 import com.example.feedthesnake.theme.Green

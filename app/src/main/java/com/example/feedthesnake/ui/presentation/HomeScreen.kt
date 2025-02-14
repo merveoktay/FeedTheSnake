@@ -9,7 +9,6 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.wrapContentHeight
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Scaffold
@@ -61,7 +60,12 @@ fun HomeScreenContent(
     onNavigateToScoreTable: (String?) -> Unit,
 
     ) {
-    var sound by remember { mutableStateOf(true) }
+    var soundIcon by remember {
+        mutableStateOf(
+            if (MusicManager.isMusicPlay) R.drawable.sound_on_icon
+            else R.drawable.sound_off_icon
+        )
+    }
     Box(modifier = modifier.fillMaxSize()) {
         Image(
             painter = painterResource(id = R.drawable.login_background),
@@ -99,29 +103,26 @@ fun HomeScreenContent(
             )
         }
         IconButton(
-            onClick = { sound=!sound
-                if (sound) MusicManager.playMusic(context, R.raw.game_music, true)
-                    else  MusicManager.stopMusic()
-                },
+            onClick = {
+                MusicManager.isMusicPlay = !MusicManager.isMusicPlay
+                if (MusicManager.isMusicPlay) {
+                    soundIcon = R.drawable.sound_on_icon
+                    MusicManager.playMusic(context, R.raw.game_music, true)
+                } else {
+                    soundIcon = R.drawable.sound_off_icon
+                    MusicManager.pauseMusic()
+                }
+            },
             modifier = modifier
                 .align(Alignment.BottomStart)
-                .padding(MEDIUM_PADDING_SIZE) // İkonun ekran kenarına çok yakın olmaması için padding ekleyelim
+                .padding(MEDIUM_PADDING_SIZE)
         ) {
-            if(sound){
             Icon(
-                painter = painterResource(R.drawable.sound_off_icon),
-                contentDescription = stringResource(R.string.sound_off),
+                painter = painterResource(soundIcon),
+                contentDescription = stringResource(R.string.sound),
                 tint = Color.Unspecified,
                 modifier = modifier.size(ICON_SIZE)
-            )}
-            else {
-                Icon(
-                    painter = painterResource(R.drawable.sound_on_icon),
-                    contentDescription = stringResource(R.string.sound_off),
-                    tint = Color.Unspecified,
-                    modifier = modifier.size(ICON_SIZE)
-                )
-            }
+            )
         }
     }
 }

@@ -19,5 +19,5 @@
     <string name="hard">Hard</string>
     <string name="start">Start</string>
     <string name="select_difficulty">Select Difficulty</string>
-    <string name="sound_off">sound off</string>
+    <string name="sound">sound</string>
 </resources>
