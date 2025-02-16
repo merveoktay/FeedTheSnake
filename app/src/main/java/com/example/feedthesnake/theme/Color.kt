@@ -17,3 +17,5 @@ val LightBlue = Color(0xFFBCF8FC)
 val Blue=Color(0xFF00B894)
 val Yellow = Color(0xFFFEDC7B)
 val Orange = Color(0xFFF49069)
+val LightWaterGreen=Color(0xFFD4F1F4)
+

@@ -60,7 +60,9 @@ import com.example.feedthesnake.model.SharedPreferencesHelper
 import com.example.feedthesnake.theme.DarkGreen
 import com.example.feedthesnake.theme.Green
 import com.example.feedthesnake.theme.LightBlue
+import com.example.feedthesnake.theme.LightWaterGreen
 import com.example.feedthesnake.theme.Orange
+import com.example.feedthesnake.theme.Yellow
 import com.example.feedthesnake.viewModel.SnakeViewModel
 import kotlinx.coroutines.delay
 
@@ -146,22 +148,22 @@ fun GameScreenContent(
     val snakeBody by snakeViewModel.snakeBody.collectAsState()
     val foodPosition by snakeViewModel.foodPosition.collectAsState()
     val snakeDirection by snakeViewModel.snakeDirection.collectAsState()
-    val score by snakeViewModel.score.collectAsState()
     val isGameOver by snakeViewModel.isGameOver.collectAsState()
 
     val blockSize = with(LocalDensity.current) { BLOCK_SIZE.toPx() }
     var canvasSize by remember { mutableStateOf(Size.Zero) }
 
-    LaunchedEffect(canvasSize) {
-        snakeViewModel.initializeFood(canvasSize.width, canvasSize.height, blockSize)
-    }
+    LaunchedEffect(canvasSize, isGameOver) {
+        if (canvasSize.width > 0 && canvasSize.height > 0) {
+            snakeViewModel.initializeFood(canvasSize.width, canvasSize.height, blockSize)
+        }
 
-    LaunchedEffect(canvasSize) {
         while (!isGameOver) {
-            delay(SharedPreferencesHelper.getDifficulty(context = context))
+            delay(SharedPreferencesHelper.getDifficulty(context))
             snakeViewModel.moveSnake(blockSize, canvasSize, name, onNavigateToGameOver)
         }
     }
+
 
     Column(
         modifier = modifier.fillMaxSize(),
@@ -176,7 +178,7 @@ fun GameScreenContent(
                 .border(BORDER_SIZE, DarkGreen)
         ) {
             Canvas(
-                modifier = Modifier.matchParentSize()
+                modifier = Modifier.matchParentSize().background(color = LightWaterGreen)
             ) {
                 canvasSize = size
 
@@ -189,7 +191,7 @@ fun GameScreenContent(
                 }
 
                 drawCircle(
-                    color = Orange,
+                    color =  listOf(Yellow, Orange, Green).random(),
                     center = foodPosition + Offset(blockSize / BLOCK_SIZE_DIVIDER, blockSize / BLOCK_SIZE_DIVIDER),
                     radius = blockSize / BLOCK_SIZE_DIVIDER
                 )

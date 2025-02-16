@@ -1,10 +1,9 @@
 package com.example.feedthesnake.viewModel
 
 import android.util.Log
-import androidx.compose.runtime.State
-import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.geometry.Size
+import androidx.compose.ui.graphics.Color
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.feedthesnake.constants.SizeConstants.BLOCK_SIZE_DIVIDER
@@ -53,7 +52,7 @@ class SnakeViewModel @Inject constructor(private val repository: SnakeRepository
                 val scores = repository.getTopSnakes()
                 _topSnakes.value = scores
             } catch (e: Exception) {
-                Log.d("Error",e.message.toString())
+                Log.d("Error", e.message.toString())
             }
         }
     }
@@ -83,14 +82,20 @@ class SnakeViewModel @Inject constructor(private val repository: SnakeRepository
             newHead.y < 0 || newHead.y + blockSize > canvasSize.height ||
             _snakeBody.value.drop(DROP_SIZE).contains(newHead)
         ) {
-            _isGameOver.value = true
-            saveSnake(name, _score.value)
-            onGameOver(_score.value)
+            if (!_isGameOver.value) {
+                _isGameOver.value = true
+                saveSnake(name, _score.value)
+                onGameOver(_score.value)
+            }
             return
         }
 
-        val headCenter = newHead + Offset(blockSize / BLOCK_SIZE_DIVIDER, blockSize / BLOCK_SIZE_DIVIDER)
-        val foodCenter = _foodPosition.value + Offset(blockSize / BLOCK_SIZE_DIVIDER, blockSize / BLOCK_SIZE_DIVIDER)
+        val headCenter =
+            newHead + Offset(blockSize / BLOCK_SIZE_DIVIDER, blockSize / BLOCK_SIZE_DIVIDER)
+        val foodCenter = _foodPosition.value + Offset(
+            blockSize / BLOCK_SIZE_DIVIDER,
+            blockSize / BLOCK_SIZE_DIVIDER
+        )
         if ((headCenter - foodCenter).getDistance() < blockSize) {
             _snakeBody.value = listOf(newHead) + _snakeBody.value
             _foodPosition.value = randomOffset(canvasSize.width, canvasSize.height, blockSize)
@@ -102,10 +107,18 @@ class SnakeViewModel @Inject constructor(private val repository: SnakeRepository
 
     fun updateDirection(dragX: Float, dragY: Float) {
         _snakeDirection.value = when {
-            abs(dragX) > abs(dragY) -> if (dragX > 0) Offset(MEDIUM_OFFSET_SIZE, MIN_OFFSET_SIZE) else Offset(-MEDIUM_OFFSET_SIZE, MIN_OFFSET_SIZE)
-            else -> if (dragY > 0) Offset(MIN_OFFSET_SIZE, MEDIUM_OFFSET_SIZE) else Offset(MIN_OFFSET_SIZE, -MEDIUM_OFFSET_SIZE)
+            abs(dragX) > abs(dragY) -> if (dragX > 0) Offset(
+                MEDIUM_OFFSET_SIZE,
+                MIN_OFFSET_SIZE
+            ) else Offset(-MEDIUM_OFFSET_SIZE, MIN_OFFSET_SIZE)
+
+            else -> if (dragY > 0) Offset(MIN_OFFSET_SIZE, MEDIUM_OFFSET_SIZE) else Offset(
+                MIN_OFFSET_SIZE,
+                -MEDIUM_OFFSET_SIZE
+            )
         }
     }
+
     private fun randomOffset(width: Float, height: Float, blockSize: Float): Offset {
         val randomX = (0 until (width / blockSize).toInt()).random() * blockSize
         val randomY = (0 until (height / blockSize).toInt()).random() * blockSize
