@@ -21,6 +21,7 @@ import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -29,9 +30,11 @@ import com.example.feedthesnake.constants.SizeConstants.IMAGE_MAX_SIZE
 import com.example.feedthesnake.constants.SizeConstants.MAX_ANIMATED_OFFSET
 import com.example.feedthesnake.constants.SizeConstants.MIN_ANIMATED_OFFSET
 import com.example.feedthesnake.ui.AnimationHelper
+import com.example.feedthesnake.util.MusicManager
 
 @Composable
 fun SecondSplashScreen(onNavigateToHome: () -> Unit) {
+    val context = LocalContext.current
 
     val alpha = remember { Animatable(0f) }
 
@@ -44,6 +47,7 @@ fun SecondSplashScreen(onNavigateToHome: () -> Unit) {
     val animatedColor2 = AnimationHelper.secondAnimatedColor(infiniteTransition)
 
     LaunchedEffect(Unit) {
+        MusicManager.playMusic(context, R.raw.intro_music)
         alpha.animateTo(
             targetValue = 1f,
             animationSpec = tween(durationMillis = 1500, easing = FastOutSlowInEasing)

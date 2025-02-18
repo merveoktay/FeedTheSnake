@@ -78,10 +78,11 @@ class SnakeViewModel @Inject constructor(private val repository: SnakeRepository
             y = _snakeBody.value.first().y + blockSize * _snakeDirection.value.y
         )
 
-        if (newHead.x < 0 || newHead.x + blockSize > canvasSize.width ||
-            newHead.y < 0 || newHead.y + blockSize > canvasSize.height ||
+        if (newHead.x < 0 || newHead.x >= canvasSize.width - blockSize ||
+            newHead.y < 0 || newHead.y >= canvasSize.height - blockSize ||
             _snakeBody.value.drop(DROP_SIZE).contains(newHead)
-        ) {
+        )
+        {
             if (!_isGameOver.value) {
                 _isGameOver.value = true
                 saveSnake(name, _score.value)

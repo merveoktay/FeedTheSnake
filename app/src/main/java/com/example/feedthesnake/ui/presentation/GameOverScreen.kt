@@ -40,11 +40,12 @@ fun GameOverScreen(
     LaunchedEffect(Unit) {
         if (MusicManager.isMusicPlay) {
             MusicManager.stopMusic()
-            MusicManager.playMusic(context, R.raw.gameover_music, false)
-            MusicManager.stopMusic()
-            MusicManager.playMusic(context, R.raw.game_music)
+            MusicManager.playMusic(context, R.raw.game_over_music, false) {
+                MusicManager.playMusic(context, R.raw.intro_music)
+            }
         }
     }
+
     Scaffold(modifier = Modifier.testTag("GameOverScreen"),
         containerColor = LightBlue,
         topBar = { CustomTopBar(onNavigateToHome) },

@@ -39,6 +39,8 @@ fun HomeScreen(
     onNavigateToScoreTable: (String?) -> Unit,
 ) {
     val context = LocalContext.current
+
+
     Scaffold(
         modifier = Modifier.testTag("HomeScreen"),
         content = { innerPadding ->
@@ -107,7 +109,7 @@ fun HomeScreenContent(
                 MusicManager.isMusicPlay = !MusicManager.isMusicPlay
                 if (MusicManager.isMusicPlay) {
                     soundIcon = R.drawable.sound_on_icon
-                    MusicManager.playMusic(context, R.raw.game_music, true)
+                    MusicManager.playMusic(context, R.raw.intro_music, true)
                 } else {
                     soundIcon = R.drawable.sound_off_icon
                     MusicManager.pauseMusic()

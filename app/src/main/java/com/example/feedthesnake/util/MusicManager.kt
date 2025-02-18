@@ -9,16 +9,31 @@ object MusicManager {
 
     var isMusicPlay = true
 
-    fun playMusic(context: Context, musicResId: Int, loop: Boolean = true) {
-        if (mediaPlayer == null) {
+    fun playMusic(
+        context: Context,
+        musicResId: Int,
+        loop: Boolean = true,
+        onComplete: (() -> Unit)? = null,
+    ) {
+        stopMusic()
+        if (currentPosition != 0) {
             mediaPlayer = MediaPlayer.create(context, musicResId).apply {
                 isLooping = loop
                 seekTo(currentPosition)
                 start()
+                setOnCompletionListener {
+                    onComplete?.invoke()
+                }
             }
         } else {
-            mediaPlayer?.seekTo(currentPosition)
-            mediaPlayer?.start()
+            mediaPlayer = MediaPlayer.create(context, musicResId).apply {
+                isLooping = loop
+                seekTo(0)
+                start()
+                setOnCompletionListener {
+                    onComplete?.invoke()
+                }
+            }
         }
     }
 
@@ -32,6 +47,7 @@ object MusicManager {
     }
 
     fun stopMusic() {
+        mediaPlayer?.stop()
         mediaPlayer?.release()
         mediaPlayer = null
         currentPosition = 0

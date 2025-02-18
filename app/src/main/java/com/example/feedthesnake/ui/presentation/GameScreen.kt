@@ -63,6 +63,7 @@ import com.example.feedthesnake.theme.LightBlue
 import com.example.feedthesnake.theme.LightWaterGreen
 import com.example.feedthesnake.theme.Orange
 import com.example.feedthesnake.theme.Yellow
+import com.example.feedthesnake.util.MusicManager
 import com.example.feedthesnake.viewModel.SnakeViewModel
 import kotlinx.coroutines.delay
 
@@ -152,7 +153,11 @@ fun GameScreenContent(
 
     val blockSize = with(LocalDensity.current) { BLOCK_SIZE.toPx() }
     var canvasSize by remember { mutableStateOf(Size.Zero) }
-
+    LaunchedEffect(Unit) {
+        if (MusicManager.isMusicPlay) {
+            MusicManager.playMusic(context, R.raw.game_music)
+        }
+    }
     LaunchedEffect(canvasSize, isGameOver) {
         if (canvasSize.width > 0 && canvasSize.height > 0) {
             snakeViewModel.initializeFood(canvasSize.width, canvasSize.height, blockSize)

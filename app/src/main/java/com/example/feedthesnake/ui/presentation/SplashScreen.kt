@@ -17,7 +17,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -26,13 +25,10 @@ import com.example.feedthesnake.constants.SizeConstants.IMAGE_MAX_SIZE
 import com.example.feedthesnake.constants.SizeConstants.MAX_ANIMATED_OFFSET
 import com.example.feedthesnake.constants.SizeConstants.MIN_ANIMATED_OFFSET
 import com.example.feedthesnake.ui.AnimationHelper
-import com.example.feedthesnake.util.MusicManager
 
 
 @Composable
 fun SplashScreen(onNavigateToSecondSplash: () -> Unit) {
-    val context = LocalContext.current
-
     val infiniteTransition = AnimationHelper.infiniteTransitionFloat()
 
     val animatedOffsetX = AnimationHelper.infiniteFloatTransition(infiniteTransition)
@@ -41,7 +37,6 @@ fun SplashScreen(onNavigateToSecondSplash: () -> Unit) {
 
     val animatedColor2 = AnimationHelper.secondAnimatedColor(infiniteTransition)
     LaunchedEffect(Unit) {
-        MusicManager.playMusic(context, R.raw.game_music)
         kotlinx.coroutines.delay(3000)
         onNavigateToSecondSplash()
     }
