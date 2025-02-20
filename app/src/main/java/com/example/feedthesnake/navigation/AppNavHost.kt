@@ -56,7 +56,6 @@ fun AppNavHost() {
             if (name != null) {
                 GameScreen(
                     name = name,
-                    onNavigateToHome = { navController.navigate("home") },
                     onNavigateToGameOver = { score ->
                         navController.navigate("game_over/$score")
                     },

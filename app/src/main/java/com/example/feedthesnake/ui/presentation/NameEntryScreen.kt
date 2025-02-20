@@ -12,6 +12,8 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.wrapContentSize
+import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.OutlinedTextFieldDefaults.colors
@@ -29,14 +31,13 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import com.example.feedthesnake.R
 import com.example.feedthesnake.constants.SizeConstants.IMAGE_MIN_SIZE
 import com.example.feedthesnake.constants.SizeConstants.MAX_CORNER_SHAPE_SIZE
-import com.example.feedthesnake.constants.SizeConstants.MAX_PADDING_SIZE
 import com.example.feedthesnake.constants.SizeConstants.MEDIUM_FONT_SIZE
 import com.example.feedthesnake.constants.SizeConstants.MEDIUM_PADDING_SIZE
-import com.example.feedthesnake.constants.SizeConstants.SMALL_PADDING_SIZE
 import com.example.feedthesnake.constants.SpeedConstants.EASY_SPEED
 import com.example.feedthesnake.constants.SpeedConstants.HARD_SPEED
 import com.example.feedthesnake.constants.SpeedConstants.NORMAL_SPEED
@@ -47,16 +48,16 @@ import com.example.feedthesnake.theme.DarkGreen
 import com.example.feedthesnake.theme.DarkGrey
 import com.example.feedthesnake.theme.Green
 import com.example.feedthesnake.theme.LightBlue
+import com.example.feedthesnake.theme.customFontFamily
 import com.example.feedthesnake.ui.components.CustomRadioButton
 
 @Composable
 fun NameEntryScreen(onNavigateToHome: () -> Unit, onNavigateToGame: (String) -> Unit) {
     val context = LocalContext.current
-    Scaffold(modifier = Modifier.testTag("NameEntryScreen"),
+    Scaffold(modifier = Modifier.testTag("NameEntryScreen").wrapContentSize(),
         containerColor = LightBlue,
         topBar = { CustomTopBar(onNavigateToHome) },
         content = { innerPadding ->
-
             NameEntryScreenContent(
                 context,
                 modifier = Modifier.padding(innerPadding),
@@ -80,11 +81,11 @@ fun NameEntryScreenContent(
         Image(
             painter = painterResource(id = R.drawable.background),
             contentDescription = stringResource(R.string.logo),
-            modifier = modifier.fillMaxSize(),
+            modifier = Modifier.fillMaxSize(),
             contentScale = ContentScale.Crop
         )
         Column(
-            modifier = modifier
+            modifier = Modifier
                 .fillMaxSize()
                 .align(Alignment.Center),
             horizontalAlignment = Alignment.CenterHorizontally,
@@ -101,11 +102,16 @@ fun NameEntryScreenContent(
                 onValueChange = { newName ->
                     name = newName
                 },
-                label = { Text(stringResource(R.string.name), color = DarkGrey) },
+
+                label = { Text(stringResource(R.string.name), color = DarkGrey,fontFamily = customFontFamily) },
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(MEDIUM_PADDING_SIZE),
                 singleLine = true,
+                textStyle = TextStyle(
+                    fontFamily = customFontFamily,
+                    color = DarkGrey
+                ),
                 shape = RoundedCornerShape(MAX_CORNER_SHAPE_SIZE),
                 colors = colors(
                     focusedBorderColor = Green,
@@ -122,14 +128,14 @@ fun NameEntryScreenContent(
                 text = stringResource(R.string.select_difficulty),
                 fontSize = MEDIUM_FONT_SIZE,
                 fontWeight = FontWeight.Bold,
+                fontFamily = customFontFamily,
                 color = DarkGrey,
                 modifier = Modifier.padding(top = MEDIUM_PADDING_SIZE)
             )
             Row(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(horizontal = MAX_PADDING_SIZE),
-                horizontalArrangement = Arrangement.SpaceAround
+                modifier = Modifier.wrapContentWidth(),
+                verticalAlignment = Alignment.Top,
+                horizontalArrangement = Arrangement.Center
             ) {
                 CustomRadioButton(
                     label = stringResource(R.string.easy),

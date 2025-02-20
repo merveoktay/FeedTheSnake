@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -36,17 +37,17 @@ fun GameOverScreen(
     onNavigateToNameEntry: (String?) -> Unit,
 ) {
     val context = LocalContext.current
-
     LaunchedEffect(Unit) {
         if (MusicManager.isMusicPlay) {
             MusicManager.stopMusic()
             MusicManager.playMusic(context, R.raw.game_over_music, false) {
+                MusicManager.stopMusic()
                 MusicManager.playMusic(context, R.raw.intro_music)
             }
         }
     }
 
-    Scaffold(modifier = Modifier.testTag("GameOverScreen"),
+    Scaffold(modifier = Modifier.testTag("GameOverScreen").wrapContentSize(),
         containerColor = LightBlue,
         topBar = { CustomTopBar(onNavigateToHome) },
         content = { innerPadding ->
@@ -67,15 +68,16 @@ fun GameOverScreenContent(
     onNavigateToNameEntry: (String?) -> Unit,
     context: Context,
 ) {
+
     Box(modifier = modifier.fillMaxSize()) {
         Image(
             painter = painterResource(id = R.drawable.background),
             contentDescription = stringResource(R.string.logo),
-            modifier = modifier.fillMaxSize(),
+            modifier = Modifier.fillMaxSize(),
             contentScale = ContentScale.Crop
         )
         Column(
-            modifier = modifier
+            modifier = Modifier
                 .fillMaxSize()
                 .align(Alignment.Center),
             horizontalAlignment = Alignment.CenterHorizontally
@@ -84,14 +86,13 @@ fun GameOverScreenContent(
                 painter = painterResource(id = R.drawable.game_over),
                 contentDescription = stringResource(R.string.logo),
                 modifier = Modifier.size(IMAGE_MAX_SIZE),
-
                 )
             Text(
                 text = stringResource(R.string.your_score, score),
                 color = DarkGrey,
                 fontFamily = customFontFamily,
                 fontSize = MAX_FONT_SIZE,
-                modifier = modifier.padding(start = MAX_PADDING_SIZE, end = MAX_PADDING_SIZE)
+                modifier = Modifier.padding(start = MAX_PADDING_SIZE, end = MAX_PADDING_SIZE)
             )
             CustomButton(
                 text = stringResource(R.string.try_again),

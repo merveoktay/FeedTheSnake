@@ -8,12 +8,12 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.wrapContentHeight
+import androidx.compose.foundation.layout.wrapContentSize
+import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -29,7 +29,9 @@ import androidx.compose.ui.res.stringResource
 import com.example.feedthesnake.R
 import com.example.feedthesnake.constants.SizeConstants.ICON_SIZE
 import com.example.feedthesnake.constants.SizeConstants.IMAGE_MAX_SIZE
+import com.example.feedthesnake.constants.SizeConstants.MAX_PADDING_SIZE
 import com.example.feedthesnake.constants.SizeConstants.MEDIUM_PADDING_SIZE
+import com.example.feedthesnake.constants.SizeConstants.MIN_PADDING_SIZE
 import com.example.feedthesnake.ui.components.CustomButton
 import com.example.feedthesnake.util.MusicManager
 
@@ -39,10 +41,8 @@ fun HomeScreen(
     onNavigateToScoreTable: (String?) -> Unit,
 ) {
     val context = LocalContext.current
-
-
     Scaffold(
-        modifier = Modifier.testTag("HomeScreen"),
+        modifier = Modifier.testTag("HomeScreen").fillMaxSize(),
         content = { innerPadding ->
             HomeScreenContent(
                 context = context,
@@ -72,14 +72,13 @@ fun HomeScreenContent(
         Image(
             painter = painterResource(id = R.drawable.login_background),
             contentDescription = stringResource(R.string.logo),
-            modifier = modifier.fillMaxSize(),
+            modifier = Modifier.fillMaxSize(),
             contentScale = ContentScale.Crop
         )
         Column(
-            modifier = modifier
+            modifier = Modifier
                 .fillMaxWidth()
-                .wrapContentHeight()
-                .align(Alignment.Center),
+                .align(Alignment.Center).padding(vertical = MAX_PADDING_SIZE),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             Image(
@@ -115,7 +114,7 @@ fun HomeScreenContent(
                     MusicManager.pauseMusic()
                 }
             },
-            modifier = modifier
+            modifier = Modifier
                 .align(Alignment.BottomStart)
                 .padding(MEDIUM_PADDING_SIZE)
         ) {
@@ -123,7 +122,7 @@ fun HomeScreenContent(
                 painter = painterResource(soundIcon),
                 contentDescription = stringResource(R.string.sound),
                 tint = Color.Unspecified,
-                modifier = modifier.size(ICON_SIZE)
+                modifier = Modifier.size(ICON_SIZE)
             )
         }
     }

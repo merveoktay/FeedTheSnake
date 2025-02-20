@@ -4,6 +4,7 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
@@ -107,7 +108,6 @@ fun ScoreTableScreenContent(modifier: Modifier, snakes: StateFlow<List<Snake>>) 
         Row(
             modifier = modifier
                 .fillMaxWidth(),
-
             horizontalArrangement = Arrangement.SpaceBetween
         ) {
             Text(
@@ -125,10 +125,10 @@ fun ScoreTableScreenContent(modifier: Modifier, snakes: StateFlow<List<Snake>>) 
         }
 
         Divider(color = Color.Black, thickness = DIVIDER_THICKNESS_SIZE)
-        LazyColumn{
+        LazyColumn( verticalArrangement = Arrangement.spacedBy(MAX_PADDING_SIZE),modifier = Modifier.fillMaxSize()){
             items(snakeList) { snake ->
                 Row(
-                    modifier = modifier
+                    modifier = Modifier
                         .fillMaxWidth(),
                     horizontalArrangement = Arrangement.SpaceBetween
                 ) {

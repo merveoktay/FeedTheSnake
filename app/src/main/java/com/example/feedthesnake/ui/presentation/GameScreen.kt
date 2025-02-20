@@ -14,6 +14,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
@@ -45,7 +46,6 @@ import com.example.feedthesnake.constants.SizeConstants.BLOCK_SIZE
 import com.example.feedthesnake.constants.SizeConstants.BLOCK_SIZE_DIVIDER
 import com.example.feedthesnake.constants.SizeConstants.BORDER_SIZE
 import com.example.feedthesnake.constants.SizeConstants.COLUMN_SIZE
-import com.example.feedthesnake.constants.SizeConstants.ICON_SIZE
 import com.example.feedthesnake.constants.SizeConstants.MAX_ICON_SIZE
 import com.example.feedthesnake.constants.SizeConstants.MAX_WIDTH_SIZE
 import com.example.feedthesnake.constants.SizeConstants.MEDIUM_OFFSET_SIZE
@@ -70,16 +70,22 @@ import kotlinx.coroutines.delay
 @Composable
 fun GameScreen(
     name: String,
-    onNavigateToHome: () -> Unit,
     onNavigateToGameOver: (Int) -> Unit,
     snakeViewModel: SnakeViewModel
 ) {
     val context = LocalContext.current
     val score by snakeViewModel.score.collectAsState()
+    LaunchedEffect(Unit) {
+        if (MusicManager.isMusicPlay) {
+            MusicManager.stopMusic()
+            MusicManager.playMusic(context, R.raw.game_music)
+        }
+    }
+
     Scaffold(
-        modifier = Modifier.testTag("GameScreen"),
+        modifier = Modifier.testTag("GameScreen").wrapContentSize(),
         containerColor = LightBlue,
-        topBar = { GameScreenTopBar(score,onNavigateToHome) },
+        topBar = { GameScreenTopBar(score) },
         content = { innerPadding -> GameScreenContent(
             context = context,
             name = name,
@@ -92,19 +98,11 @@ fun GameScreen(
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun GameScreenTopBar(score:Int,onNavigateToHome: () -> Unit) {
+fun GameScreenTopBar(score:Int) {
     TopAppBar(colors = TopAppBarDefaults.topAppBarColors(
         containerColor = LightBlue
     ), title = {
         Row(verticalAlignment = Alignment.CenterVertically) {
-            IconButton(onClick = { onNavigateToHome() }) {
-                Icon(
-                    painter = painterResource(id = R.drawable.back_icon),
-                    contentDescription = stringResource(R.string.back),
-                    tint = Color.Unspecified,
-                    modifier = Modifier.size(ICON_SIZE)
-                )
-            }
             Spacer(modifier = Modifier.weight(1f))
             Box(
                 modifier = Modifier
@@ -113,21 +111,21 @@ fun GameScreenTopBar(score:Int,onNavigateToHome: () -> Unit) {
                     .padding(horizontal =SMALL_PADDING_SIZE),
                 contentAlignment = Alignment.CenterEnd
             ) {
-                Column(
-                    horizontalAlignment = Alignment.CenterHorizontally
-                ) {
+                Row(horizontalArrangement = Arrangement.spacedBy(MIN_PADDING_SIZE)) {
                     Text(
                         text = stringResource(R.string.score),
                         color = Color.Black,
                         fontSize = MIN_FONT_SIZE,
                         fontWeight = FontWeight.Bold,
                     )
+
                     Text(
                         text = score.toString(),
                         color = Color.Black,
                         fontSize = MIN_FONT_SIZE,
                         fontWeight = FontWeight.Bold
                     )
+
                 }
             }
 
@@ -153,11 +151,7 @@ fun GameScreenContent(
 
     val blockSize = with(LocalDensity.current) { BLOCK_SIZE.toPx() }
     var canvasSize by remember { mutableStateOf(Size.Zero) }
-    LaunchedEffect(Unit) {
-        if (MusicManager.isMusicPlay) {
-            MusicManager.playMusic(context, R.raw.game_music)
-        }
-    }
+
     LaunchedEffect(canvasSize, isGameOver) {
         if (canvasSize.width > 0 && canvasSize.height > 0) {
             snakeViewModel.initializeFood(canvasSize.width, canvasSize.height, blockSize)
@@ -204,9 +198,6 @@ fun GameScreenContent(
         }
 
         ControlPanel(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(SMALL_PADDING_SIZE),
             onDirectionChange = { direction ->
                 snakeViewModel.updateDirection(direction.x, direction.y)
             },
@@ -219,7 +210,6 @@ fun GameScreenContent(
 @Composable
 fun ControlPanel(
     onDirectionChange: (Offset) -> Unit,
-    modifier: Modifier,
     snakeDirection: Offset
 ) {
     val up = Offset(MIN_OFFSET_SIZE, -MEDIUM_OFFSET_SIZE)
@@ -229,7 +219,7 @@ fun ControlPanel(
 
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
-        modifier = modifier
+        modifier = Modifier
             .size(COLUMN_SIZE)
 
     ) {

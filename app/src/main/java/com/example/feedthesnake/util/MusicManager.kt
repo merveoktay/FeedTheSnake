@@ -15,18 +15,8 @@ object MusicManager {
         loop: Boolean = true,
         onComplete: (() -> Unit)? = null,
     ) {
-        stopMusic()
-        if (currentPosition != 0) {
-            mediaPlayer = MediaPlayer.create(context, musicResId).apply {
-                isLooping = loop
-                seekTo(currentPosition)
-                start()
-                setOnCompletionListener {
-                    onComplete?.invoke()
-                }
-            }
-        } else {
-            mediaPlayer = MediaPlayer.create(context, musicResId).apply {
+        if (mediaPlayer == null) {
+            mediaPlayer = MediaPlayer.create(context, musicResId)?.apply {
                 isLooping = loop
                 seekTo(0)
                 start()
@@ -34,9 +24,12 @@ object MusicManager {
                     onComplete?.invoke()
                 }
             }
+        } else {
+            mediaPlayer?.seekTo(currentPosition)
+            mediaPlayer?.isLooping=loop
+            mediaPlayer?.start()
         }
     }
-
     fun pauseMusic() {
         mediaPlayer?.let {
             if (it.isPlaying) {

@@ -30,7 +30,6 @@ import com.example.feedthesnake.constants.SizeConstants.IMAGE_MAX_SIZE
 import com.example.feedthesnake.constants.SizeConstants.MAX_ANIMATED_OFFSET
 import com.example.feedthesnake.constants.SizeConstants.MIN_ANIMATED_OFFSET
 import com.example.feedthesnake.ui.AnimationHelper
-import com.example.feedthesnake.util.MusicManager
 
 @Composable
 fun SecondSplashScreen(onNavigateToHome: () -> Unit) {
@@ -47,7 +46,6 @@ fun SecondSplashScreen(onNavigateToHome: () -> Unit) {
     val animatedColor2 = AnimationHelper.secondAnimatedColor(infiniteTransition)
 
     LaunchedEffect(Unit) {
-        MusicManager.playMusic(context, R.raw.intro_music)
         alpha.animateTo(
             targetValue = 1f,
             animationSpec = tween(durationMillis = 1500, easing = FastOutSlowInEasing)
@@ -55,6 +53,7 @@ fun SecondSplashScreen(onNavigateToHome: () -> Unit) {
         kotlinx.coroutines.delay(3000)
         onNavigateToHome()
     }
+
 
     Box(
         modifier = Modifier

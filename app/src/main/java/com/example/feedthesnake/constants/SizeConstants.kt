@@ -20,7 +20,7 @@ object SizeConstants {
 
     val COLUMN_SIZE=150.dp
     val WIDTH_SIZE=24.dp
-val MAX_WIDTH_SIZE=42.dp
+    val MAX_WIDTH_SIZE=42.dp
 
     val MAX_CORNER_SHAPE_SIZE = 50.dp
     val MIN_CORNER_SHAPE_SIZE = 16.dp

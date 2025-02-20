@@ -3,7 +3,6 @@ package com.example.feedthesnake.viewModel
 import android.util.Log
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.geometry.Size
-import androidx.compose.ui.graphics.Color
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.feedthesnake.constants.SizeConstants.BLOCK_SIZE_DIVIDER
