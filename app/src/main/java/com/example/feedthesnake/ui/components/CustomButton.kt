@@ -2,13 +2,9 @@ package com.example.feedthesnake.ui.components
 
 import android.app.Activity
 import android.content.Context
-import android.os.Handler
-import android.os.Looper
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.wrapContentSize
-import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Text
@@ -20,12 +16,9 @@ import com.example.feedthesnake.R
 import com.example.feedthesnake.constants.SizeConstants.BUTTON_CORNER_SHAPE_SIZE
 import com.example.feedthesnake.constants.SizeConstants.BUTTON_FONT_SIZE
 import com.example.feedthesnake.constants.SizeConstants.MAX_PADDING_SIZE
-import com.example.feedthesnake.constants.SizeConstants.MEDIUM_PADDING_SIZE
-import com.example.feedthesnake.constants.SizeConstants.SMALL_PADDING_SIZE
 import com.example.feedthesnake.theme.DarkGreen
 import com.example.feedthesnake.theme.Green
 import kotlin.system.exitProcess
-
 
 @Composable
 fun CustomButton(
@@ -40,7 +33,7 @@ fun CustomButton(
         onClick = {
             if (text == buttonText) {
                 (context as? Activity)?.finishAndRemoveTask()
-                System.exit(0)
+                exitProcess(0)
             } else {
                 onNavigate(name)
             }

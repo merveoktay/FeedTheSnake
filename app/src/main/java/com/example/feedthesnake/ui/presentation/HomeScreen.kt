@@ -1,5 +1,6 @@
 package com.example.feedthesnake.ui.presentation
 
+import android.annotation.SuppressLint
 import android.content.Context
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Box
@@ -8,8 +9,6 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.wrapContentSize
-import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Scaffold
@@ -31,7 +30,6 @@ import com.example.feedthesnake.constants.SizeConstants.ICON_SIZE
 import com.example.feedthesnake.constants.SizeConstants.IMAGE_MAX_SIZE
 import com.example.feedthesnake.constants.SizeConstants.MAX_PADDING_SIZE
 import com.example.feedthesnake.constants.SizeConstants.MEDIUM_PADDING_SIZE
-import com.example.feedthesnake.constants.SizeConstants.MIN_PADDING_SIZE
 import com.example.feedthesnake.ui.components.CustomButton
 import com.example.feedthesnake.util.MusicManager
 
@@ -54,6 +52,7 @@ fun HomeScreen(
         })
 }
 
+@SuppressLint("AutoboxingStateCreation")
 @Composable
 fun HomeScreenContent(
     context: Context,
